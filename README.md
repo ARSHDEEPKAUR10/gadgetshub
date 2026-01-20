@@ -4,7 +4,6 @@ GadgetsHub is a full-stack, multi-page web application built using modern front-
 The application allows users to explore, manage, and interact with information about electronic gadgets such as smartphones, laptops, headphones, and other consumer tech products.
 
 
-
 ## Project Team
 
 Team Name: Tribit Builders
