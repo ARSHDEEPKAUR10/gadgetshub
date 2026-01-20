@@ -1,11 +1,15 @@
 import Navbar from "./components/Navbar/Navbar";
-import "./styles/utilities.css";
+import { containerStyle } from "./styles/Utilities";
+import GlobalStyles from "./styles/GlobalStyles";
 
 function App() {
   return (
     <>
+      <GlobalStyles />
+
       <Navbar />
-      <main className="container">
+
+      <main style={containerStyle}>
         <h2>Welcome to GadgetsHub</h2>
         <p>Explore gadgets like smartphones, laptops, and headphones.</p>
 
