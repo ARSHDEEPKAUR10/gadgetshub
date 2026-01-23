@@ -10,7 +10,6 @@ Team Name: Tribit Builders
 
 Team Members:
 - Arshdeep kaur
-- Karamjit Kaur
 - Harpreet Singh
 
 ## Project General Description
@@ -37,7 +36,6 @@ Rather than implementing a full e-commerce system, GadgetsHub emphasizes:
 - Interactive UI components
 - Scalable application structure
 
----
 
 ## Technology Overview
 
