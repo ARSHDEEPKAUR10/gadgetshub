@@ -1,4 +1,7 @@
 import "./styles/utilities.css";
+import Navbar from "./components/Navbar/Navbar";
+import { containerStyle } from "./styles/Utilities";
+import GlobalStyles from "./styles/GlobalStyles";
 
 function App() {
   return (
