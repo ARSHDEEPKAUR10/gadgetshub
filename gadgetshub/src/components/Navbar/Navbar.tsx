@@ -1,24 +1,19 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import "./Navbar.css";
 
-function Navbar() {
-  return (
-    <nav className="navbar">
-      <h1 className="navbar__title">GadgetsHub</h1>
+export default function Navbar() {
+  const { pathname } = useLocation();
+  const isHome = pathname === "/";
 
-      <ul className="navbar__links">
-        <li>
-          <NavLink to="/">Home</NavLink>
-        </li>
-        <li>
-          <NavLink to="/explore">Gadgets</NavLink>
-        </li>
-        <li>
-          <NavLink to="/wishlist">Wishlist</NavLink>
-        </li>
-      </ul>
-    </nav>
+  return (
+    <header className="navbar">
+      {/* Hide brand on home page */}
+      {!isHome && <h1 className="brand">GadgetsHub</h1>}
+
+      <nav>
+        <NavLink to="/">Home</NavLink>
+        <NavLink to="/wishlist">Wishlist</NavLink>
+      </nav>
+    </header>
   );
 }
-
-export default Navbar;
