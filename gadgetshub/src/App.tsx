@@ -1,10 +1,8 @@
-import Navbar from "./components/Navbar/Navbar";
 import "./styles/utilities.css";
 
 function App() {
   return (
     <>
-      <Navbar />
       <main className="container">
         <h2>Welcome to GadgetsHub</h2>
         <p>Explore gadgets like smartphones, laptops, and headphones.</p>
