@@ -1,4 +1,5 @@
 import { Routes, Route, useLocation } from "react-router-dom";
+
 import Navbar from "./components/Navbar/Navbar";
 import GlobalStyles from "./styles/GlobalStyles";
 
@@ -17,7 +18,8 @@ export default function App() {
 
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/explore/" element={<ExplorePage />} />
+        <Route path="/explore" element={<ExplorePage />} />
+        <Route path="/explore/:categoryName" element={<ExplorePage />} />
       </Routes>
     </>
   );
