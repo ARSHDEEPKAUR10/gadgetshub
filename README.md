@@ -6,7 +6,7 @@ The application allows users to explore, manage, and interact with information a
 
 ## Project Team
 
-Team Name: Tribit Builders
+Team Name: Binary Builders
 
 Team Members:
 - Arshdeep kaur
