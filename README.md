@@ -6,11 +6,10 @@ The application allows users to explore, manage, and interact with information a
 
 ## Project Team
 
-Team Name: Tribit Builders
+Team Name: Binary Builders
 
 Team Members:
 - Arshdeep kaur
-- Karamjit Kaur
 - Harpreet Singh
 
 ## Project General Description
@@ -37,7 +36,6 @@ Rather than implementing a full e-commerce system, GadgetsHub emphasizes:
 - Interactive UI components
 - Scalable application structure
 
----
 
 ## Technology Overview
 
