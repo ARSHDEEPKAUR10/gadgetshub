@@ -1,5 +1,3 @@
-import "./styles/utilities.css";
-
 function App() {
   return (
     <>
