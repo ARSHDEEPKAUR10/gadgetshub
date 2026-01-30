@@ -3,7 +3,6 @@ import { colors, fonts } from "./Variables";
 
 const GlobalStyles = () => {
   useEffect(() => {
-    document.body.style.margin = "0";
     document.body.style.fontFamily = fonts.main;
     document.body.style.backgroundColor = colors.background;
     document.body.style.color = colors.text;
