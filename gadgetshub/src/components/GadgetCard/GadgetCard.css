@@ -1,0 +1,47 @@
+.gadget-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #fff;
+  margin-bottom: 12px;
+}
+
+.gadget-card__name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.gadget-card__meta {
+  margin: 6px 0 0;
+  color: #4b5563;
+  font-size: 14px;
+}
+
+.gadget-card__price {
+  margin: 10px 0 0;
+  font-weight: 900;
+}
+
+.gadget-card__actions {
+  display: flex;
+  align-items: center;
+}
+
+.gadget-card__btn {
+  border: none;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 800;
+  background: #0066cc;
+  color: white;
+}
+
+.gadget-card__btn.danger {
+  background: #dc2626;
+}

@@ -1,11 +1,10 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import Navbar from "./components/Navbar/Navbar";
-import GlobalStyles from "./styles/GlobalStyles";
 
 import HomePage from "./pages/HomePage";
 import ExplorePage from "./pages/ExplorePage";
-import WishlistPage from "../src/pages/Wishlist"
+import WishlistPage from "./pages/Wishlist";
 
 export default function App() {
   const location = useLocation();
@@ -13,8 +12,6 @@ export default function App() {
 
   return (
     <>
-      <GlobalStyles />
-
       {!isHome && <Navbar />}
 
       <Routes>
