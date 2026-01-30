@@ -5,6 +5,7 @@ import GlobalStyles from "./styles/GlobalStyles";
 
 import HomePage from "./pages/HomePage";
 import ExplorePage from "./pages/ExplorePage";
+import WishlistPage from "../src/pages/Wishlist"
 
 export default function App() {
   const location = useLocation();
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/explore" element={<ExplorePage />} />
         <Route path="/explore/:categoryName" element={<ExplorePage />} />
+        <Route path="/wishlist" element={<WishlistPage />} />
       </Routes>
     </>
   );

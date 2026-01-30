@@ -19,7 +19,6 @@ export default function HomePage() {
         <div className="hero_overlay_full">
           <div className="hero_topbar">
             <Link className="hero_homebtn" to="/explore">
-              Enter App →
             </Link>
           </div>
 
@@ -30,7 +29,6 @@ export default function HomePage() {
             Discover trending tech, compare specs, and build your wishlist in one place.
           </p>
 
-          {/* Search keeps updating in real time (Sprint requirement) */}
           <input
             className="hero_search"
             value={search}
@@ -38,7 +36,6 @@ export default function HomePage() {
             placeholder="Search categories..."
           />
 
-          {/* Clickable chips only (no light list) */}
           <div className="hero_chips">
             {filtered.includes("Smartphones") && (
               <Link className="chip" to="/explore/smartphones">📱 Smartphones</Link>
@@ -55,7 +52,6 @@ export default function HomePage() {
           </div>
 
           <Link className="hero_btn" to="/explore">
-            View Featured Gadgets →
           </Link>
         </div>
       </section>
