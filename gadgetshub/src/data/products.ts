@@ -2,7 +2,7 @@ export type Product = {
   id: number;
   name: string;
   brand: string;
-  category: "Smartphone" | "Laptop" | "Headphones";
+  category: "Smartphone" | "Laptop" | "Headphones" | "Accessories";
   price: number;
 };
  

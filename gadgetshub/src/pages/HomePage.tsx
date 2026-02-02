@@ -17,11 +17,6 @@ export default function HomePage() {
     <main className="home_full">
       <section className="hero_full">
         <div className="hero_overlay_full">
-          <div className="hero_topbar">
-            <Link className="hero_homebtn" to="/explore">
-            </Link>
-          </div>
-
           <p className="hero_small">WELCOME TO</p>
           <h1 className="hero_title">Gadgets Hub</h1>
 
@@ -38,20 +33,21 @@ export default function HomePage() {
 
           <div className="hero_chips">
             {filtered.includes("Smartphones") && (
-              <Link className="chip" to="/explore/smartphones">📱 Smartphones</Link>
+              <Link className="chip" to="/explore/smartphones"> Smartphones</Link>
             )}
             {filtered.includes("Laptops") && (
-              <Link className="chip" to="/explore/laptops">💻 Laptops</Link>
+              <Link className="chip" to="/explore/laptops"> Laptops</Link>
             )}
             {filtered.includes("Headphones") && (
-              <Link className="chip" to="/explore/headphones">🎧 Headphones</Link>
+              <Link className="chip" to="/explore/headphones"> Headphones</Link>
             )}
             {filtered.includes("Accessories") && (
-              <Link className="chip" to="/explore/accessories">🧩 Accessories</Link>
+              <Link className="chip" to="/explore/accessories"> Accessories</Link>
             )}
           </div>
 
           <Link className="hero_btn" to="/explore">
+              View Featured Gadgets Here →
           </Link>
         </div>
       </section>
