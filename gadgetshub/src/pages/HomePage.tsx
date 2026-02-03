@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useMemo, useState } from "react";
 import "./HomePage.css";
-
 const terms = ["Smartphones", "Laptops", "Headphones", "Accessories"];
 
 export default function HomePage() {

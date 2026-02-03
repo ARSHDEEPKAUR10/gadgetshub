@@ -41,4 +41,6 @@ export const products: Product[] = [
   { id: 24, name: "Crusher Evo", brand: "Skullcandy", category: "Headphones", price: 229 },
 ];
 
+  // Accessories
+  
 export default products;
