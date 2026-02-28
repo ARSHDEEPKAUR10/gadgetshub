@@ -1,21 +1,23 @@
-import "./styles/utilities.css";
-import { containerStyle } from "./styles/Utilities";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
-function App() {
+import Navbar from "./components/Navbar/Navbar";
+import HomePage from "./pages/HomePage";
+import WishlistPage from "./pages/Wishlist";
+
+export default function App() {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   return (
-    <main style={containerStyle}>
-      <h2>Welcome to GadgetsHub</h2>
-      <p>Explore gadgets like smartphones, laptops, and headphones.</p>
+    <>
+      {!isHome && <Navbar />}
 
-      <h3>Categories</h3>
-      <ul>
-        <li>Smartphones</li>
-        <li>Laptops</li>
-        <li>Headphones</li>
-        <li>Accessories</li>
-      </ul>
-    </main>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/wishlist" element={<WishlistPage />} />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
   );
 }
-
-export default App;
