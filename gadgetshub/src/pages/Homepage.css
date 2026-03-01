@@ -1,3 +1,10 @@
+.home_full {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  max-width: none;
+}
+
 .hero_full {
   height: 100vh;
   width: 100%;
@@ -19,8 +26,8 @@
   align-items: center;
   text-align: center;
 
-  position: relative;
-  
+  position: relative; 
+  padding: 44px;
 }
 
 .hero_center {
@@ -36,6 +43,7 @@
   letter-spacing: 0.25em;
   opacity: 0.85;
   margin: 0 0 12px;
+  text-transform: uppercase;
 }
 
 .hero_title {
@@ -52,13 +60,14 @@
   font-size: clamp(1rem, 2.2vw, 1.4rem);
   line-height: 1.5;
   opacity: 0.95;
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
 }
 
 .hero_search {
   width: 100%;
   max-width: 520px;
   padding: 14px 18px;
-  border-radius: 50px;
+  border-radius: 999px;
   border: none;
   outline: none;
   margin: 16px 0 18px;
@@ -73,13 +82,13 @@
   margin-top: 6px;
 }
 
-.hero_chips a {
+.chip {
   color: #4ea1ff;
   text-decoration: none;
   font-weight: 600;
 }
 
-.hero_chips a:hover {
+.chip:hover {
   text-decoration: underline;
 }
 
@@ -130,7 +139,12 @@
   background: rgba(255, 255, 255, 0.08);
 }
 
+/* Responsive */
 @media (max-width: 768px) {
+  .hero_overlay_full {
+    padding: 22px;
+  }
+
   .hero_top_actions {
     right: 16px;
     top: 16px;

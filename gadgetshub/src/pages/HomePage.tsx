@@ -33,12 +33,12 @@ export default function HomePage() {
             />
 
             <div className="hero_top_actions">
-            <Link to="/explore" className="top_btn">
-              Explore
-            </Link>
-            <Link to="/wishlist" className="top_btn outline">
-              Wishlist
-            </Link>
+              <Link to="/explore" className="top_btn">
+                Explore
+              </Link>
+              <Link to="/wishlist" className="top_btn outline">
+                Wishlist
+              </Link>
             </div>
 
             <div className="hero_chips">
