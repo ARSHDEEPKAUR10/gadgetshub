@@ -11,12 +11,16 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 
 
 export default function App() {
-  const location = useLocation();
-  const isHome = location.pathname === "/";
-
   return (
-    <>
-      {!isHome && <Navbar />}
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+
+      <Route path="/explore" element={<ExplorePage />} />
+      <Route path="/explore/:categorySlug" element={<CategoryBrandsPage />} />
+      <Route path="/explore/:categorySlug/:brandSlug" element={<BrandProductsPage />} />
+      <Route path="/product/:id" element={<ProductDetailsPage />} />
+
+      <Route path="/wishlist" element={<WishlistPage />} />
 
       <Routes>
         <Route path="/" element={<HomePage />} />

@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom";
 import "./GadgetCard.css";
-
+ 
 type GadgetCardProps = {
+  id: number;
   name: string;
   brand: string;
   category: string;
