@@ -1,6 +1,6 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  line-height: 3.0;
   font-weight: 400;
 
   color-scheme: light;
@@ -21,11 +21,10 @@ html, body {
 
 body {
   display: block;
-  min-width: 320px;
-  min-height: 100vh;
   background: #ffffff;
   color: #111827;
 }
+
 
 a {
   font-weight: 600;
