@@ -11,6 +11,11 @@
   font-size: 28px;
 }
 
+.navbar__links {
+  display: flex;
+  gap: 24px;
+}
+
 .navbar__links a {
   text-decoration: none;
   color: #213547;
