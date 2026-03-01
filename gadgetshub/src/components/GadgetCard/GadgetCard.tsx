@@ -1,119 +1,52 @@
+import { Link } from "react-router-dom";
 import "./GadgetCard.css";
-
+ 
 type GadgetCardProps = {
+  id: number;
   name: string;
   brand: string;
   category: string;
   price: number;
-
-  image?: string;
-  taglineLines?: string[];
-  colors?: string[];
-
-  wishlisted?: boolean;
-  onToggleWishlist?: () => void;
-
-  onLearnMore?: () => void;
-  onBuy?: () => void;
+  image: string;
+  colors: string[];
 };
-
+ 
 export default function GadgetCard({
+  id,
   name,
   brand,
   category,
   price,
   image,
-  taglineLines,
   colors,
-  wishlisted = false,
-  onToggleWishlist,
-  onLearnMore,
-  onBuy,
 }: GadgetCardProps) {
-  const safeTaglines = taglineLines ?? [];
-  const safeColors = colors ?? [];
-
   return (
-    <article className="apple-card">
-      {image ? (
-        <div className="apple-card__media">
-          <img className="apple-card__img" src={image} alt={`${name} by ${brand}`} />
-          <div className="apple-card__top-actions">
-            {onToggleWishlist && (
-              <button
-                className="apple-card__star"
-                type="button"
-                onClick={onToggleWishlist}
-                aria-label="Toggle wishlist"
-                title={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-              >
-                {wishlisted ? "★" : "☆" }
-              </button>
-            )}
-          </div>
+    <article className="gadget-card">
+      <Link to={`/product/${id}`} className="gadget-card__link">
+      <div className="gadget-card__media">
+        <img className="gadget-card__img" src={image} alt={name} />
         </div>
-      ) : (
-        <div className="apple-card__media apple-card__media--noimg">
-          <div className="apple-card__top-actions">
-            {onToggleWishlist && (
-              <button
-                className="apple-card__star"
-                type="button"
-                onClick={onToggleWishlist}
-                aria-label="Toggle wishlist"
-                title={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
-              >
-                {wishlisted ? "★" : "☆"}
-              </button>
-            )}
-          </div>
-        </div>
-      )}
+        
+        <div className="gadget-card__info">
+          <h3 className="gadget-card__name">{name}</h3>
+          <p className="gadget-card__meta">
+            <strong>{brand}</strong> • {category}
+            </p>
 
-      {safeColors.length > 0 && (
-        <div className="apple-card__dots" aria-label="Available colors">
-          {safeColors.map((c) => (
-            <span key={c} className="apple-card__dot" style={{ backgroundColor: c }} />
-          ))}
-        </div>
-      )}
-
-      <div className="apple-card__body">
-        <h3 className="apple-card__title">{name}</h3>
-
-        {safeTaglines.length > 0 && (
-          <div className="apple-card__taglines">
-            {safeTaglines.map((t, i) => (
-              <p key={i} className="apple-card__tagline">
-                {t}
-              </p>
+          <p className="gadget-card__price">${price}</p>
+          
+          <div className="gadget-card__colors">
+            {colors.slice(0, 6).map((c) => (
+              <span
+                key={c}
+                className="gadget-card__dot"
+                style={{ background: c }}
+                aria-label="color"
+              />
             ))}
           </div>
-        )}
-
-        <p className="apple-card__price">
-          From <strong>${price}</strong>
-        </p>
-
-        {(onLearnMore || onBuy) && (
-          <div className="apple-card__cta">
-            {onLearnMore && (
-              <button className="apple-card__learn" type="button" onClick={onLearnMore}>
-                Learn more
-              </button>
-            )}
-            {onBuy && (
-              <button className="apple-card__buy" type="button" onClick={onBuy}>
-                Buy <span aria-hidden="true">›</span>
-              </button>
-            )}
-          </div>
-        )}
-
-        <p className="apple-card__meta">
-          {brand} • {category}
-        </p>
-      </div>
+        </div>
+      </Link>
     </article>
   );
 }

@@ -6,9 +6,8 @@ import WishlistPage from "./pages/Wishlist";
 
 import ExplorePage from "./pages/ExplorePage";
 import CategoryBrandsPage from "./pages/CategoryBrandsPage";
-import BrandProductsPage from "../src/pages/BrandSmartphonesPage";
+import BrandProductsPage from "./pages/BrandSmartphonesPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
-
 
 export default function App() {
   const location = useLocation();
@@ -23,9 +22,7 @@ export default function App() {
         <Route path="/wishlist" element={<WishlistPage />} />
 
         <Route path="/explore" element={<ExplorePage />} />
-
         <Route path="/explore/:categorySlug" element={<CategoryBrandsPage />} />
-
         <Route
           path="/explore/:categorySlug/:brandSlug"
           element={<BrandProductsPage />}
