@@ -32,15 +32,6 @@ export default function HomePage() {
               placeholder="Search categories..."
             />
 
-            <div className="hero_top_actions">
-              <Link to="/explore" className="top_btn">
-                Explore
-              </Link>
-              <Link to="/wishlist" className="top_btn outline">
-                Wishlist
-              </Link>
-            </div>
-
             <div className="hero_chips">
               {filtered.includes("Smartphones") && (
                 <Link className="chip" to="/explore/smartphones">
@@ -65,7 +56,7 @@ export default function HomePage() {
             </div>
 
             <Link className="hero_btn" to="/explore">
-              View Featured Gadgets Here →
+              View Featured Gadgets →
             </Link>
           </div>
         </div>

@@ -4,7 +4,7 @@ import HomePage from "./pages/HomePage";
 import ExplorePage from "./pages/ExplorePage";
 import CategoryBrandsPage from "./pages/CategoryBrandsPage";
 import BrandProductsPage from "./pages/BrandProductsPage";
-import ProductDetailsPage from "./pages/ProductDetailPage";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
 import WishlistPage from "./pages/Wishlist";
 
 export default function App() {
