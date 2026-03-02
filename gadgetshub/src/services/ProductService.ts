@@ -1,4 +1,4 @@
-import type { Product, ProductCategory } from "../types/Product";
+import type { Product, ProductCategory } from "../data/products";
 import { ProductRepository } from "../repositories/ProductRepository";
 
 export class ProductService {

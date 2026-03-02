@@ -1,6 +1,6 @@
 import products from "../data/products";
 
-import type { Product, ProductCategory } from "../types/Product";
+import type { Product, ProductCategory } from "../data/products";
 
 export class ProductRepository {
 
@@ -26,6 +26,5 @@ export class ProductRepository {
     create(_product: Product) {}
     update(_product: Product) {}
     delete(_id: number) {}
-
 }
  

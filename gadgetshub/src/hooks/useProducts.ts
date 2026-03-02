@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import type { Product, ProductCategory } from "../types/Product";
+import type { Product, ProductCategory } from "../data/products";
 import { ProductRepository } from "../repositories/ProductRepository";
 import { ProductService } from "../services/ProductService";
  

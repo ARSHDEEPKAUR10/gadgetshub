@@ -1,5 +1,5 @@
 import type { WishlistItem } from "../types/WishlistItem";
-import { wishlistTestData } from "../data/wishlistTestData";
+import { wishlistTestData } from "../data/WishlistTestData";
 
 
 export class WishlistRepository {

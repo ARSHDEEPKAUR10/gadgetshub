@@ -37,7 +37,7 @@ export default function ProductDetailsPage() {
     return (
       <main style={{ padding: 24 }}>
         <p>Product not found.</p>
-        <Link to="/smartphones">Back</Link>
+        <Link to="/explore/smartphones">Back</Link>
       </main>
     );
   }
@@ -49,12 +49,16 @@ export default function ProductDetailsPage() {
     title: product.name,
     category: categoryToSlug(product.category),
     priceCAD: product.price,
-    rating: 4.5, 
+    rating: 4.5,
   };
 
   return (
     <main style={{ padding: 24, maxWidth: 900, margin: "0 auto" }}>
-      <Link to={`/${categoryToSlug(product.category)}/${slugify(product.brand)}`}>
+      <Link
+        to={`/explore/${categoryToSlug(product.category)}/${slugify(
+          product.brand
+        )}`}
+      >
         ← Back to {product.brand}
       </Link>
 
@@ -79,7 +83,14 @@ export default function ProductDetailsPage() {
             }}
           />
 
-          <div style={{ display: "flex", gap: 10, justifyContent: "center", marginTop: 12 }}>
+          <div
+            style={{
+              display: "flex",
+              gap: 10,
+              justifyContent: "center",
+              marginTop: 12,
+            }}
+          >
             {product.colors.map((c: string) => (
               <span
                 key={c}
@@ -163,7 +174,8 @@ export default function ProductDetailsPage() {
                 )}
                 {product.specs.connectivity && (
                   <li>
-                    <strong>Connectivity:</strong> {product.specs.connectivity}
+                    <strong>Connectivity:</strong>{" "}
+                    {product.specs.connectivity}
                   </li>
                 )}
               </ul>
