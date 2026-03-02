@@ -1,7 +1,8 @@
 import { Link, useParams } from "react-router-dom";
 import { useMemo } from "react";
 import products from "../data/products";
-import type { ProductCategory } from "../types/Product";
+
+import type { ProductCategory } from "../data/products";
  
 const CATEGORY_MAP: Record<string, ProductCategory> = {
   smartphones: "Smartphone",
@@ -9,7 +10,7 @@ const CATEGORY_MAP: Record<string, ProductCategory> = {
   headphones: "Headphones",
   accessories: "Accessories",
 };
- 
+
 function slugify(s: string) {
   return s.toLowerCase().replace(/\s+/g, "-");
 }
@@ -21,6 +22,7 @@ export default function CategoryBrandsPage() {
     if (!categorySlug) return null;
     return CATEGORY_MAP[categorySlug.toLowerCase()] ?? null;
   }, [categorySlug]);
+
  
   const brands = useMemo(() => {
     if (!category) return [];
@@ -28,6 +30,7 @@ export default function CategoryBrandsPage() {
       new Set(products.filter((p) => p.category === category).map((p) => p.brand))
     );
   }, [category]);
+
  
   if (!category || !categorySlug) {
     return (
@@ -37,11 +40,14 @@ export default function CategoryBrandsPage() {
       </main>
     );
   }
+
  
   return (
     <main style={{ padding: 24 }}>
       <h2>{category} Brands</h2>
       <p>Pick a brand:</p>
+
+
  
       <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginTop: 12 }}>
         {brands.map((b) => (
@@ -61,5 +67,5 @@ export default function CategoryBrandsPage() {
       </div>
     </main>
   );
+
 }
- 
