@@ -5,4 +5,3 @@ export const containerStyle: CSSProperties = {
   margin: "0 auto",
   padding: "1.5rem",
 };
-

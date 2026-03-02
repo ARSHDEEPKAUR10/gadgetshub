@@ -1,6 +1,6 @@
 import GadgetCard from "../components/GadgetCard/GadgetCard";
 import products from "../data/products";
-import type { Product } from "../types/product";
+import type { Product } from "../types/Product";
  
 export default function GadgetsPage() {
   return (
@@ -29,4 +29,3 @@ export default function GadgetsPage() {
   </main>
   );
 }
- 

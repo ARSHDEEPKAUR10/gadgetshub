@@ -10,7 +10,6 @@ export function useWishlist() {
   const [items, setItems] = useState<WishlistItem[]>([]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-
   async function refresh() {
     setLoading(true);
     try {
@@ -36,20 +35,17 @@ export function useWishlist() {
       setLoading(false);
     }
   }
-
   async function remove(id: string) {
     setLoading(true);
     try {
       await service.remove(id);
       setMessage("Removed from wishlist");
-
       const data = await service.list();
       setItems(data);
     } finally {
       setLoading(false);
     }
   }
-
   const ids = useMemo(() => new Set(items.map((x) => x.id)), [items]);
   function isWishlisted(id: string) {
     return ids.has(id);
@@ -67,12 +63,10 @@ export function useWishlist() {
         if (!cancelled) setLoading(false);
       }
     })();
-
     return () => {
       cancelled = true;
     };
   }, []);
-
   return {
     items,
     count: items.length,
