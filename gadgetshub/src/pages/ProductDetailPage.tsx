@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 
 import products from "../data/products";
-import type { ProductCategory } from "../types/Product";
+import type { ProductCategory } from "../data/products";
 
 import type { WishlistItem } from "../types/WishlistItem";
 import { useWishlist } from "../hooks/useWishlist";
@@ -35,9 +35,9 @@ export default function ProductDetailsPage() {
 
   if (!product) {
     return (
-      <main className="page_container">
+      <main style={{ padding: 24 }}>
         <p>Product not found.</p>
-        <Link to="/explore">Back to Explore</Link>
+        <Link to="/explore/smartphones">Back</Link>
       </main>
     );
   }
@@ -53,8 +53,12 @@ export default function ProductDetailsPage() {
   };
 
   return (
-    <main className="page_container" style={{ maxWidth: 900 }}>
-      <Link to={`/explore/${categoryToSlug(product.category)}/${slugify(product.brand)}`}>
+    <main style={{ padding: 24, maxWidth: 900, margin: "0 auto" }}>
+      <Link
+        to={`/explore/${categoryToSlug(product.category)}/${slugify(
+          product.brand
+        )}`}
+      >
         ← Back to {product.brand}
       </Link>
 
@@ -79,7 +83,14 @@ export default function ProductDetailsPage() {
             }}
           />
 
-          <div style={{ display: "flex", gap: 10, justifyContent: "center", marginTop: 12 }}>
+          <div
+            style={{
+              display: "flex",
+              gap: 10,
+              justifyContent: "center",
+              marginTop: 12,
+            }}
+          >
             {product.colors.map((c: string) => (
               <span
                 key={c}
@@ -163,7 +174,8 @@ export default function ProductDetailsPage() {
                 )}
                 {product.specs.connectivity && (
                   <li>
-                    <strong>Connectivity:</strong> {product.specs.connectivity}
+                    <strong>Connectivity:</strong>{" "}
+                    {product.specs.connectivity}
                   </li>
                 )}
               </ul>
