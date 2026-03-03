@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useMemo, useState } from "react";
-import "./HomePage.css";
+import "./Homepage.css";
 
 const terms = ["Smartphones", "Laptops", "Headphones", "Accessories"];
 
