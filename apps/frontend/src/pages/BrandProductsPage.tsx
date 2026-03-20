@@ -1,7 +1,8 @@
 import { Link, useParams } from "react-router-dom";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import products, { type ProductCategory } from "../data/products";
+import type { Product, ProductCategory } from "../types/product";
+import { ProductService } from "../services/ProductService";
 import GadgetCard from "../components/GadgetCard/GadgetCard";
 
 const CATEGORY_MAP: Record<string, ProductCategory> = {
@@ -11,23 +12,39 @@ const CATEGORY_MAP: Record<string, ProductCategory> = {
   accessories: "Accessories",
 };
 
-function slugify(s: string) {
-  return s.toLowerCase().replace(/\s+/g, "-");
-}
+const productService = new ProductService();
 
 export default function BrandProductsPage() {
-  const { categorySlug, brandSlug } = useParams();
+  const { categorySlug, brandSlug } = useParams<{
+    categorySlug?: string;
+    brandSlug?: string;
+  }>();
+
+  const [filtered, setFiltered] = useState<Product[]>([]);
+  const [error, setError] = useState("");
 
   const category = useMemo<ProductCategory | null>(() => {
     if (!categorySlug) return null;
     return CATEGORY_MAP[categorySlug.toLowerCase()] ?? null;
   }, [categorySlug]);
 
-  const filtered = useMemo(() => {
-    if (!category || !brandSlug) return [];
-    return products.filter(
-      (p) => p.category === category && slugify(p.brand) === brandSlug
-    );
+  useEffect(() => {
+    const loadProducts = async () => {
+      if (!category || !brandSlug) return;
+
+      try {
+        setError("");
+        const data = await productService.listByCategoryAndBrand(
+          category,
+          brandSlug
+        );
+        setFiltered(data);
+      } catch {
+        setError("Failed to load products");
+      }
+    };
+
+    loadProducts();
   }, [category, brandSlug]);
 
   if (!category) {
@@ -35,6 +52,18 @@ export default function BrandProductsPage() {
       <main style={{ padding: 24 }}>
         <h2>Category not found</h2>
         <Link to="/explore">Go back</Link>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main style={{ padding: 24 }}>
+        <Link to={`/explore/${categorySlug}`}>← Back to brands</Link>
+        <h2 style={{ margin: "16px 0" }}>
+          {brandSlug?.toUpperCase()} {category}
+        </h2>
+        <p>{error}</p>
       </main>
     );
   }

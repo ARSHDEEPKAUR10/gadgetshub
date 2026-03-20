@@ -1,33 +1,76 @@
-import type { Product, ProductCategory } from "../data/products";
-import { ProductRepository } from "../repositories/ProductRepository";
+import type { Product, ProductCategory } from "../types/product";
+import { mapBackendProductToFrontend } from "./productMapper";
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+type BackendProduct = {
+  id: number;
+  name: string;
+  brand: string;
+  category: string;
+  price: number;
+  image: string;
+  colors: string[];
+  taglineLines: string[];
+  display?: string | null;
+  chip?: string | null;
+  ram?: string | null;
+  storage?: string | null;
+  battery?: string | null;
+  camera?: string | null;
+  os?: string | null;
+  connectivity?: string | null;
+};
 
 export class ProductService {
-  private repo: ProductRepository;
-  constructor(repo: ProductRepository) {
-    this.repo = repo;
+  async listAll(): Promise<Product[]> {
+    const res = await fetch(`${API_BASE_URL}/api/v1/products`);
+    if (!res.ok) throw new Error("Failed to fetch products");
+
+    const data: BackendProduct[] = await res.json();
+    return data.map(mapBackendProductToFrontend);
   }
- 
-  listAll(): Product[] {
-    return this.repo.getAll();
+
+  async getById(id: number): Promise<Product | undefined> {
+    const res = await fetch(`${API_BASE_URL}/api/v1/products/${id}`);
+    if (res.status === 404) return undefined;
+    if (!res.ok) throw new Error("Failed to fetch product");
+
+    const data: BackendProduct = await res.json();
+    return mapBackendProductToFrontend(data);
   }
- 
-  getById(id: number): Product | undefined {
-    return this.repo.getById(id);
+
+  async listBrandsByCategory(category: ProductCategory): Promise<string[]> {
+    const res = await fetch(
+      `${API_BASE_URL}/api/v1/products/category/${encodeURIComponent(category)}`
+    );
+    if (!res.ok) throw new Error("Failed to fetch brands");
+
+    const data: BackendProduct[] = await res.json();
+    const items: Product[] = data.map(mapBackendProductToFrontend);
+    const unique: string[] = Array.from(
+      new Set(items.map((p: Product) => p.brand))
+    );
+
+    return unique.sort((a: string, b: string) => a.localeCompare(b));
   }
- 
-  listBrandsByCategory(category: ProductCategory): string[] {
-    const items = this.repo.getByCategory(category);
-    const unique = Array.from(new Set(items.map((p) => p.brand)));
-    return unique.sort((a, b) => a.localeCompare(b));
+
+  async listByCategoryAndBrand(
+    category: ProductCategory,
+    brand: string
+  ): Promise<Product[]> {
+    const res = await fetch(
+      `${API_BASE_URL}/api/v1/products/category/${encodeURIComponent(
+        category
+      )}/brand/${encodeURIComponent(brand)}`
+    );
+    if (!res.ok) throw new Error("Failed to fetch products by brand");
+
+    const data: BackendProduct[] = await res.json();
+    return data.map(mapBackendProductToFrontend);
   }
- 
-  listByCategoryAndBrand(category: ProductCategory, brand: string): Product[] {
-    return this.repo.getByCategoryAndBrand(category, brand);
-  }
- 
+
   sortByPriceAsc(items: Product[]): Product[] {
     return [...items].sort((a, b) => a.price - b.price);
   }
-
 }
- 

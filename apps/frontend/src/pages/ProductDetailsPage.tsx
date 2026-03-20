@@ -1,11 +1,9 @@
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-
-import products from "../data/products";
-import type { ProductCategory } from "../data/products";
-
+import type { ProductCategory, Product } from "../types/product";
 import type { WishlistItem } from "../types/WishlistItem";
 import { useWishlist } from "../hooks/useWishlist";
+import { ProductService } from "../services/ProductService";
 
 function categoryToSlug(cat: ProductCategory): WishlistItem["category"] {
   switch (cat) {
@@ -24,14 +22,35 @@ function slugify(s: string) {
   return s.toLowerCase().replace(/\s+/g, "-");
 }
 
+const productService = new ProductService();
+
 export default function ProductDetailsPage() {
   const { id } = useParams<{ id?: string }>();
   const { toggle, isWishlisted, message } = useWishlist();
+  const [product, setProduct] = useState<Product | undefined>();
+  const [error, setError] = useState("");
 
-  const product = useMemo(() => {
-    const pid = Number(id);
-    return products.find((p) => p.id === pid);
+  useEffect(() => {
+    const loadProduct = async () => {
+      try {
+        if (!id) return;
+        const data = await productService.getById(Number(id));
+        setProduct(data);
+      } catch {
+        setError("Failed to load product");
+      }
+    };
+
+    loadProduct();
   }, [id]);
+
+  if (error) {
+    return (
+      <main style={{ padding: 24 }}>
+        <p>{error}</p>
+      </main>
+    );
+  }
 
   if (!product) {
     return (
@@ -137,46 +156,15 @@ export default function ProductDetailsPage() {
             <>
               <h3 style={{ marginTop: 18 }}>Specifications</h3>
               <ul>
-                {product.specs.display && (
-                  <li>
-                    <strong>Display:</strong> {product.specs.display}
-                  </li>
-                )}
-                {product.specs.chip && (
-                  <li>
-                    <strong>Chip:</strong> {product.specs.chip}
-                  </li>
-                )}
-                {product.specs.ram && (
-                  <li>
-                    <strong>RAM:</strong> {product.specs.ram}
-                  </li>
-                )}
-                {product.specs.storage && (
-                  <li>
-                    <strong>Storage:</strong> {product.specs.storage}
-                  </li>
-                )}
-                {product.specs.battery && (
-                  <li>
-                    <strong>Battery:</strong> {product.specs.battery}
-                  </li>
-                )}
-                {product.specs.camera && (
-                  <li>
-                    <strong>Camera:</strong> {product.specs.camera}
-                  </li>
-                )}
-                {product.specs.os && (
-                  <li>
-                    <strong>OS:</strong> {product.specs.os}
-                  </li>
-                )}
+                {product.specs.display && <li><strong>Display:</strong> {product.specs.display}</li>}
+                {product.specs.chip && <li><strong>Chip:</strong> {product.specs.chip}</li>}
+                {product.specs.ram && <li><strong>RAM:</strong> {product.specs.ram}</li>}
+                {product.specs.storage && <li><strong>Storage:</strong> {product.specs.storage}</li>}
+                {product.specs.battery && <li><strong>Battery:</strong> {product.specs.battery}</li>}
+                {product.specs.camera && <li><strong>Camera:</strong> {product.specs.camera}</li>}
+                {product.specs.os && <li><strong>OS:</strong> {product.specs.os}</li>}
                 {product.specs.connectivity && (
-                  <li>
-                    <strong>Connectivity:</strong>{" "}
-                    {product.specs.connectivity}
-                  </li>
+                  <li><strong>Connectivity:</strong> {product.specs.connectivity}</li>
                 )}
               </ul>
             </>
