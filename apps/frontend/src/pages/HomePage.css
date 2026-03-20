@@ -1,19 +1,13 @@
-/* =========================
-   MAIN WRAPPER
-========================= */
 .home_full {
   width: 100%;
   margin: 0;
   padding: 0;
 }
 
-/* =========================
-   HERO SECTION (FULL SCREEN)
-========================= */
 .hero_full {
   height: 100vh;
   width: 100%;
-  overflow: hidden; /* prevents unwanted scroll */
+  overflow: hidden; 
   position: relative;
 
   background-image: url("../assets/HomePage.jpeg");
@@ -22,12 +16,9 @@
   background-repeat: no-repeat;
 }
 
-/* =========================
-   OVERLAY
-========================= */
 .hero_overlay_full {
   position: absolute;
-  inset: 0; /* fills hero perfectly */
+  inset: 0;
   background: rgba(0, 0, 0, 0.45);
   color: white;
 
@@ -37,12 +28,9 @@
   text-align: center;
 
   padding: 40px 20px;
-  box-sizing: border-box; /* prevents overflow */
+  box-sizing: border-box; 
 }
 
-/* =========================
-   CENTER CONTENT
-========================= */
 .hero_center {
   width: 100%;
   max-width: 900px;
@@ -51,9 +39,6 @@
   align-items: center;
 }
 
-/* =========================
-   TEXT
-========================= */
 .hero_small {
   font-size: clamp(0.9rem, 2vw, 1.2rem);
   letter-spacing: 0.3em;
@@ -74,9 +59,6 @@
   opacity: 0.95;
 }
 
-/* =========================
-   SEARCH
-========================= */
 .hero_search {
   width: 100%;
   max-width: 520px;
@@ -89,9 +71,6 @@
   box-sizing: border-box;
 }
 
-/* =========================
-   CATEGORY CHIPS
-========================= */
 .hero_chips {
   display: flex;
   gap: 14px;
@@ -110,9 +89,6 @@
   text-decoration: underline;
 }
 
-/* =========================
-   CTA BUTTON
-========================= */
 .hero_btn {
   margin-top: 20px;
   padding: 12px 26px;
@@ -129,9 +105,6 @@
   opacity: 0.95;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
 @media (max-width: 768px) {
   .hero_overlay_full {
     padding: 24px 16px;
