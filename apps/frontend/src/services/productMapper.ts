@@ -9,7 +9,6 @@ type BackendProduct = {
   image: string;
   colors: string[];
   taglineLines: string[];
-
   display?: string | null;
   chip?: string | null;
   ram?: string | null;

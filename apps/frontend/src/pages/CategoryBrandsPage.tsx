@@ -29,7 +29,9 @@ export default function CategoryBrandsPage() {
   useEffect(() => {
     const loadBrands = async () => {
       if (!category) return;
+
       try {
+        setError("");
         const data = await productService.listBrandsByCategory(category);
         setBrands(data);
       } catch {
