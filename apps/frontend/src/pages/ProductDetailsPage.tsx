@@ -33,6 +33,7 @@ export default function ProductDetailsPage() {
   useEffect(() => {
     const loadProduct = async () => {
       try {
+        setError("");
         if (!id) return;
         const data = await productService.getById(Number(id));
         setProduct(data);
@@ -156,13 +157,27 @@ export default function ProductDetailsPage() {
             <>
               <h3 style={{ marginTop: 18 }}>Specifications</h3>
               <ul>
-                {product.specs.display && <li><strong>Display:</strong> {product.specs.display}</li>}
-                {product.specs.chip && <li><strong>Chip:</strong> {product.specs.chip}</li>}
-                {product.specs.ram && <li><strong>RAM:</strong> {product.specs.ram}</li>}
-                {product.specs.storage && <li><strong>Storage:</strong> {product.specs.storage}</li>}
-                {product.specs.battery && <li><strong>Battery:</strong> {product.specs.battery}</li>}
-                {product.specs.camera && <li><strong>Camera:</strong> {product.specs.camera}</li>}
-                {product.specs.os && <li><strong>OS:</strong> {product.specs.os}</li>}
+                {product.specs.display && (
+                  <li><strong>Display:</strong> {product.specs.display}</li>
+                )}
+                {product.specs.chip && (
+                  <li><strong>Chip:</strong> {product.specs.chip}</li>
+                )}
+                {product.specs.ram && (
+                  <li><strong>RAM:</strong> {product.specs.ram}</li>
+                )}
+                {product.specs.storage && (
+                  <li><strong>Storage:</strong> {product.specs.storage}</li>
+                )}
+                {product.specs.battery && (
+                  <li><strong>Battery:</strong> {product.specs.battery}</li>
+                )}
+                {product.specs.camera && (
+                  <li><strong>Camera:</strong> {product.specs.camera}</li>
+                )}
+                {product.specs.os && (
+                  <li><strong>OS:</strong> {product.specs.os}</li>
+                )}
                 {product.specs.connectivity && (
                   <li><strong>Connectivity:</strong> {product.specs.connectivity}</li>
                 )}

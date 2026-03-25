@@ -18,19 +18,48 @@ type CategoryCard = {
 };
 
 const CATEGORIES: CategoryCard[] = [
-  { title: "Smartphones", slug: "smartphones", subtitle: "Apple, Samsung & more", image: smartphonesImg },
-  { title: "Laptops", slug: "laptops", subtitle: "Work, gaming, and study", image: laptopsImg },
-  { title: "Headphones", slug: "headphones", subtitle: "Wireless, ANC, best sound", image: headphonesImg },
-  { title: "Accessories", slug: "accessories", subtitle: "Chargers, cases, more", image: accessoriesImg },
+  {
+    title: "Smartphones",
+    slug: "smartphones",
+    subtitle: "Apple, Samsung & more",
+    image: smartphonesImg,
+  },
+  {
+    title: "Laptops",
+    slug: "laptops",
+    subtitle: "Work, gaming, and study",
+    image: laptopsImg,
+  },
+  {
+    title: "Headphones",
+    slug: "headphones",
+    subtitle: "Wireless, ANC, best sound",
+    image: headphonesImg,
+  },
+  {
+    title: "Accessories",
+    slug: "accessories",
+    subtitle: "Chargers, cases, more",
+    image: accessoriesImg,
+  },
 ];
 
 export default function ExplorePage() {
   const [featured, setFeatured] = useState<Product[]>([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    service.listAll().then((data) => {
-      setFeatured(data.slice(0, 8)); 
-    });
+    const loadFeatured = async () => {
+      try {
+        setError("");
+        const data = await service.listAll();
+        setFeatured(data.slice(0, 8));
+      } catch {
+        setError("Failed to load featured products");
+      }
+    };
+
+    loadFeatured();
   }, []);
 
   return (
@@ -39,10 +68,16 @@ export default function ExplorePage() {
 
       <section>
         <h3>Categories</h3>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16 }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: 16,
+          }}
+        >
           {CATEGORIES.map((c) => (
             <Link key={c.slug} to={`/explore/${c.slug}`}>
-              <img src={c.image} style={{ width: "100%" }} />
+              <img src={c.image} alt={c.title} style={{ width: "100%" }} />
               <h4>{c.title}</h4>
               <p>{c.subtitle}</p>
             </Link>
@@ -53,10 +88,18 @@ export default function ExplorePage() {
       <section style={{ marginTop: 20 }}>
         <h3>Featured Gadgets</h3>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
+        {error && <p>{error}</p>}
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+            gap: 16,
+          }}
+        >
           {featured.map((p) => (
             <Link key={p.id} to={`/product/${p.id}`}>
-              <img src={p.image} style={{ width: "100%" }} />
+              <img src={p.image} alt={p.name} style={{ width: "100%" }} />
               <h4>{p.name}</h4>
               <p>{p.brand}</p>
               <p>${p.price}</p>
