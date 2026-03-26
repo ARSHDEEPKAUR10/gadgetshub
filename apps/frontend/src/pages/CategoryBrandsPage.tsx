@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
-import type { ProductCategory } from "../types/Product";
+import type { ProductCategory } from "../types/product";
 import { ProductService } from "../services/ProductService";
 
 const CATEGORY_MAP: Record<string, ProductCategory> = {

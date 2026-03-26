@@ -8,11 +8,7 @@ import "./index.css";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-<<<<<<< HEAD
       <Navbar />   
-=======
-      <Navbar />  
->>>>>>> origin/main
       <App />
     </BrowserRouter>
   </StrictMode>

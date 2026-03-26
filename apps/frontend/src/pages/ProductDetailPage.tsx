@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import type { ProductCategory, Product } from "../types/Product";
+import type { ProductCategory, Product } from "../types/product";
 import type { WishlistItem } from "../types/WishlistItem";
 import { useWishlist } from "../hooks/useWishlist";
 import { ProductService } from "../services/ProductService";

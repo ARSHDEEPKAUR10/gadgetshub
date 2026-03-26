@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import type { Product, ProductCategory, ProductSpecs } from "../types/Product";
-=======
 import type { Product, ProductCategory, ProductSpecs } from "../types/product";
->>>>>>> origin/main
 
 type BackendProduct = {
   id: number;
@@ -13,10 +9,6 @@ type BackendProduct = {
   image: string;
   colors: string[];
   taglineLines: string[];
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/main
   display?: string | null;
   chip?: string | null;
   ram?: string | null;

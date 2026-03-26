@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
-import type { Product, ProductCategory } from "../types/Product";
+import type { Product, ProductCategory } from "../types/product";
 import { ProductService } from "../services/ProductService";
 import GadgetCard from "../components/GadgetCard/GadgetCard";
 
