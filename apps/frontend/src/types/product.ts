@@ -1,5 +1,9 @@
-export type ProductCategory = "Smartphone" | "Laptop" | "Headphones" | "Accessories";
- 
+export type ProductCategory =
+  | "Smartphone"
+  | "Laptop"
+  | "Headphones"
+  | "Accessories";
+
 export type ProductSpecs = {
   display?: string;
   chip?: string;
@@ -17,10 +21,8 @@ export type Product = {
   brand: string;
   category: ProductCategory;
   price: number;
- 
   image: string;
   colors: string[];
   taglineLines: string[];
- 
   specs?: ProductSpecs;
-}
+};

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { Product, ProductCategory } from "../types/Product";
+=======
+import type { Product, ProductCategory } from "../types/product";
+>>>>>>> origin/main
 import { mapBackendProductToFrontend } from "./productMapper";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -22,6 +26,7 @@ type BackendProduct = {
   connectivity?: string | null;
 };
 
+<<<<<<< HEAD
 type BackendProductPayload = {
   id: number;
   name: string;
@@ -41,6 +46,8 @@ type BackendProductPayload = {
   connectivity?: string;
 };
 
+=======
+>>>>>>> origin/main
 export class ProductService {
   async listAll(): Promise<Product[]> {
     const res = await fetch(`${API_BASE_URL}/api/v1/products`);
@@ -89,6 +96,7 @@ export class ProductService {
     return data.map(mapBackendProductToFrontend);
   }
 
+<<<<<<< HEAD
   async create(product: BackendProductPayload): Promise<Product> {
     const res = await fetch(`${API_BASE_URL}/api/v1/products`, {
       method: "POST",
@@ -136,6 +144,8 @@ export class ProductService {
     }
   }
 
+=======
+>>>>>>> origin/main
   sortByPriceAsc(items: Product[]): Product[] {
     return [...items].sort((a, b) => a.price - b.price);
   }

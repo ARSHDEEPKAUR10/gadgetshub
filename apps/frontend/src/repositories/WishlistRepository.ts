@@ -1,5 +1,6 @@
 import type { WishlistItem } from "../types/WishlistItem";
-import { wishlistTestData } from "../data/WishlistTestData";
+import { wishlistTestData } from "../data/wishlistTestData";
+
 
 export class WishlistRepository {
   private wishlist: WishlistItem[] = [];
