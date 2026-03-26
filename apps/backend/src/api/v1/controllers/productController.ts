@@ -37,7 +37,8 @@ export const getProductsByCategory = async (req: Request, res: Response) => {
 
     const products = await productService.getProductsByCategory(categoryParam);
     res.status(200).json(products);
-  } catch {
+  } catch (error) {
+    console.error("Category fetch error:", error);
     res.status(500).json({ message: "Failed to fetch products by category" });
   }
 };
@@ -66,7 +67,8 @@ export const getProductsByCategoryAndBrand = async (
     );
 
     res.status(200).json(products);
-  } catch {
+  } catch (error) {
+    console.error("Category and brand fetch error:", error);
     res
       .status(500)
       .json({ message: "Failed to fetch products by category and brand" });

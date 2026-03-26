@@ -1,34 +1,47 @@
 import { Link, useParams } from "react-router-dom";
-import { useMemo } from "react";
-import products from "../data/products";
+import { useEffect, useMemo, useState } from "react";
 import type { ProductCategory } from "../types/Product";
- 
+import { ProductService } from "../services/ProductService";
+
 const CATEGORY_MAP: Record<string, ProductCategory> = {
   smartphones: "Smartphone",
   laptops: "Laptop",
   headphones: "Headphones",
   accessories: "Accessories",
 };
- 
+
 function slugify(s: string) {
   return s.toLowerCase().replace(/\s+/g, "-");
 }
- 
+
+const productService = new ProductService();
+
 export default function CategoryBrandsPage() {
   const { categorySlug } = useParams<{ categorySlug?: string }>();
- 
+  const [brands, setBrands] = useState<string[]>([]);
+  const [error, setError] = useState("");
+
   const category = useMemo<ProductCategory | null>(() => {
     if (!categorySlug) return null;
     return CATEGORY_MAP[categorySlug.toLowerCase()] ?? null;
   }, [categorySlug]);
- 
-  const brands = useMemo(() => {
-    if (!category) return [];
-    return Array.from(
-      new Set(products.filter((p) => p.category === category).map((p) => p.brand))
-    );
+
+  useEffect(() => {
+    const loadBrands = async () => {
+      if (!category) return;
+
+      try {
+        setError("");
+        const data = await productService.listBrandsByCategory(category);
+        setBrands(data);
+      } catch {
+        setError("Failed to load brands");
+      }
+    };
+
+    loadBrands();
   }, [category]);
- 
+
   if (!category || !categorySlug) {
     return (
       <main style={{ padding: 24 }}>
@@ -37,12 +50,21 @@ export default function CategoryBrandsPage() {
       </main>
     );
   }
- 
+
+  if (error) {
+    return (
+      <main style={{ padding: 24 }}>
+        <h2>{category} Brands</h2>
+        <p>{error}</p>
+      </main>
+    );
+  }
+
   return (
     <main style={{ padding: 24 }}>
       <h2>{category} Brands</h2>
       <p>Pick a brand:</p>
- 
+
       <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginTop: 12 }}>
         {brands.map((b) => (
           <Link
@@ -62,4 +84,3 @@ export default function CategoryBrandsPage() {
     </main>
   );
 }
- 

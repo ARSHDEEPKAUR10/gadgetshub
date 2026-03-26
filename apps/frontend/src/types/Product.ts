@@ -10,7 +10,7 @@ export type ProductSpecs = {
   os?: string;
   connectivity?: string;
 };
- 
+
 export type Product = {
   id: number;
   name: string;

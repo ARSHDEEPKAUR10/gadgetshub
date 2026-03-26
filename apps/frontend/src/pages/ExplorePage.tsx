@@ -1,11 +1,14 @@
 import { Link } from "react-router-dom";
-import { useMemo } from "react";
-import products from "../data/products";
+import { useEffect, useState } from "react";
+import { ProductService } from "../services/ProductService";
+import type { Product } from "../types/Product";
 
 import smartphonesImg from "../assets/smartphones.jpg";
 import laptopsImg from "../assets/laptops.jpg";
 import headphonesImg from "../assets/headphones.jpg";
 import accessoriesImg from "../assets/accessories.jpg";
+
+const service = new ProductService();
 
 type CategoryCard = {
   title: string;
@@ -42,7 +45,22 @@ const CATEGORIES: CategoryCard[] = [
 ];
 
 export default function ExplorePage() {
-  const featured = useMemo(() => products.slice(0, 8), []);
+  const [featured, setFeatured] = useState<Product[]>([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const loadFeatured = async () => {
+      try {
+        setError("");
+        const data = await service.listAll();
+        setFeatured(data.slice(0, 8));
+      } catch {
+        setError("Failed to load featured products");
+      }
+    };
+
+    loadFeatured();
+  }, []);
 
   return (
     <main style={{ padding: 24, maxWidth: 1100, margin: "0 auto" }}>
@@ -116,6 +134,8 @@ export default function ExplorePage() {
             View phone brands →
           </Link>
         </div>
+
+        {error && <p>{error}</p>}
 
         <div
           style={{
