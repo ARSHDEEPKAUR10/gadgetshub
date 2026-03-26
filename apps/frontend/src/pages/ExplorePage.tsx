@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ProductService } from "../services/ProductService";
-import type { Product } from "../types/Product";
+import type { Product } from "../types/product";
 
 import smartphonesImg from "../assets/smartphones.jpg";
 import laptopsImg from "../assets/laptops.jpg";
