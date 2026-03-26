@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+import type { Product, ProductCategory } from "../types/Product";
+=======
 import type { Product, ProductCategory } from "../types/product";
+>>>>>>> origin/main
 import { mapBackendProductToFrontend } from "./productMapper";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -22,6 +26,28 @@ type BackendProduct = {
   connectivity?: string | null;
 };
 
+<<<<<<< HEAD
+type BackendProductPayload = {
+  id: number;
+  name: string;
+  brand: string;
+  category: ProductCategory;
+  price: number;
+  image: string;
+  colors: string[];
+  taglineLines: string[];
+  display?: string;
+  chip?: string;
+  ram?: string;
+  storage?: string;
+  battery?: string;
+  camera?: string;
+  os?: string;
+  connectivity?: string;
+};
+
+=======
+>>>>>>> origin/main
 export class ProductService {
   async listAll(): Promise<Product[]> {
     const res = await fetch(`${API_BASE_URL}/api/v1/products`);
@@ -70,6 +96,56 @@ export class ProductService {
     return data.map(mapBackendProductToFrontend);
   }
 
+<<<<<<< HEAD
+  async create(product: BackendProductPayload): Promise<Product> {
+    const res = await fetch(`${API_BASE_URL}/api/v1/products`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(product)
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to create product");
+    }
+
+    const data: BackendProduct = await res.json();
+    return mapBackendProductToFrontend(data);
+  }
+
+  async update(
+    id: number,
+    product: Partial<BackendProductPayload>
+  ): Promise<Product> {
+    const res = await fetch(`${API_BASE_URL}/api/v1/products/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(product)
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to update product");
+    }
+
+    const data: BackendProduct = await res.json();
+    return mapBackendProductToFrontend(data);
+  }
+
+  async delete(id: number): Promise<void> {
+    const res = await fetch(`${API_BASE_URL}/api/v1/products/${id}`, {
+      method: "DELETE"
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to delete product");
+    }
+  }
+
+=======
+>>>>>>> origin/main
   sortByPriceAsc(items: Product[]): Product[] {
     return [...items].sort((a, b) => a.price - b.price);
   }
