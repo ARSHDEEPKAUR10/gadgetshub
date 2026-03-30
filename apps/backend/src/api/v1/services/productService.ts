@@ -34,3 +34,59 @@ export const getProductsByCategoryAndBrand = async (
     orderBy: { id: "asc" },
   });
 };
+
+export const createProduct = async (data: {
+  id: number;
+  name: string;
+  brand: string;
+  category: string;
+  price: number;
+  image: string;
+  colors: string[];
+  taglineLines: string[];
+  display?: string;
+  chip?: string;
+  ram?: string;
+  storage?: string;
+  battery?: string;
+  camera?: string;
+  os?: string;
+  connectivity?: string;
+}) => {
+  return prisma.product.create({
+    data,
+  });
+};
+
+export const updateProduct = async (
+  id: number,
+  data: {
+    id?: number;
+    name?: string;
+    brand?: string;
+    category?: string;
+    price?: number;
+    image?: string;
+    colors?: string[];
+    taglineLines?: string[];
+    display?: string;
+    chip?: string;
+    ram?: string;
+    storage?: string;
+    battery?: string;
+    camera?: string;
+    os?: string;
+    connectivity?: string;
+  }
+) => {
+  return prisma.product.update({
+    where: { id },
+    data,
+  });
+};
+
+export const deleteProduct = async (id: number) => {
+  return prisma.product.delete({
+    where: { id },
+  });
+};

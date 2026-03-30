@@ -1,7 +1,11 @@
 .navbar {
   width: 100%;
+<<<<<<< HEAD
+  padding: 18px 32px;
+=======
   padding: 18px 40px;   
   box-sizing: border-box;  
+>>>>>>> origin/main
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -43,4 +47,8 @@
   background: rgba(0, 0, 0, 0.08);
   padding: 8px 16px;
   border-radius: 999px;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/main

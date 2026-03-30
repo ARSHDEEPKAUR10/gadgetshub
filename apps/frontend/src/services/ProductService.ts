@@ -22,6 +22,25 @@ type BackendProduct = {
   connectivity?: string | null;
 };
 
+type BackendProductPayload = {
+  id: number;
+  name: string;
+  brand: string;
+  category: ProductCategory;
+  price: number;
+  image: string;
+  colors: string[];
+  taglineLines: string[];
+  display?: string;
+  chip?: string;
+  ram?: string;
+  storage?: string;
+  battery?: string;
+  camera?: string;
+  os?: string;
+  connectivity?: string;
+};
+
 export class ProductService {
   async listAll(): Promise<Product[]> {
     const res = await fetch(`${API_BASE_URL}/api/v1/products`);
@@ -68,6 +87,53 @@ export class ProductService {
 
     const data: BackendProduct[] = await res.json();
     return data.map(mapBackendProductToFrontend);
+  }
+
+  async create(product: BackendProductPayload): Promise<Product> {
+    const res = await fetch(`${API_BASE_URL}/api/v1/products`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(product)
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to create product");
+    }
+
+    const data: BackendProduct = await res.json();
+    return mapBackendProductToFrontend(data);
+  }
+
+  async update(
+    id: number,
+    product: Partial<BackendProductPayload>
+  ): Promise<Product> {
+    const res = await fetch(`${API_BASE_URL}/api/v1/products/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(product)
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to update product");
+    }
+
+    const data: BackendProduct = await res.json();
+    return mapBackendProductToFrontend(data);
+  }
+
+  async delete(id: number): Promise<void> {
+    const res = await fetch(`${API_BASE_URL}/api/v1/products/${id}`, {
+      method: "DELETE"
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to delete product");
+    }
   }
 
   sortByPriceAsc(items: Product[]): Product[] {
