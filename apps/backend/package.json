@@ -17,7 +17,8 @@
     "express": "^5.2.1",
     "joi": "^18.0.2",
     "pg": "^8.20.0",
-    "prisma": "^7.5.0"
+    "prisma": "^7.4.2",
+    "tree-kill": "^1.2.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
