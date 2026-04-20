@@ -1,33 +1,35 @@
-import type { WishlistItem } from "../types/WishlistItem";
-import { wishlistTestData } from "../data/wishlistTestData";
-
-
 export class WishlistRepository {
-  private wishlist: WishlistItem[] = [];
+  baseUrl = "http://localhost:3000/api/wishlist";
 
-  private testData: WishlistItem[] = wishlistTestData;
+  async list(token: string) {
+    const res = await fetch(this.baseUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  async getAll(): Promise<WishlistItem[]> {
-    return [...this.wishlist];
+    return res.json();
   }
 
-  async getById(id: string): Promise<WishlistItem | undefined> {
-    return this.wishlist.find((x) => x.id === id);
+  async add(productId: number, token: string) {
+    const res = await fetch(this.baseUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ productId }),
+    });
+
+    return res.json();
   }
 
-  async add(item: WishlistItem): Promise<void> {
-    this.wishlist = [...this.wishlist, item];
-  }
-
-  async remove(id: string): Promise<void> {
-    this.wishlist = this.wishlist.filter((x) => x.id !== id);
-  }
-
-  async setAll(items: WishlistItem[]): Promise<void> {
-    this.wishlist = [...items];
-  }
-
-  async existsInTestData(id: string): Promise<boolean> {
-    return this.testData.some((x) => x.id === id);
+  async remove(id: string, token: string) {
+    await fetch(`${this.baseUrl}/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 }

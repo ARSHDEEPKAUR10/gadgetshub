@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import productRoutes from "./api/v1/routes/productRoutes";
+import wishlistRoutes from "./api/v1/routes/wishlistRoutes";
 
 const app = express();
 
@@ -18,5 +19,7 @@ app.get("/", (_req, res) => {
 });
 
 app.use("/api/v1/products", productRoutes);
+
+app.use("/api/wishlist", wishlistRoutes);
 
 export default app;
