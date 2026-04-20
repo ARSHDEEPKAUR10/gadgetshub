@@ -9,37 +9,48 @@ type BackendProduct = {
   image: string;
   colors: string[];
   taglineLines: string[];
-  display?: string | null;
-  chip?: string | null;
-  ram?: string | null;
-  storage?: string | null;
-  battery?: string | null;
-  camera?: string | null;
-  os?: string | null;
-  connectivity?: string | null;
+  specs?: {
+    display?: string | null;
+    chip?: string | null;
+    ram?: string | null;
+    storage?: string | null;
+    battery?: string | null;
+    camera?: string | null;
+    os?: string | null;
+    connectivity?: string | null;
+  };
 };
 
-const isValidCategory = (value: string): value is ProductCategory => {
-  return ["Smartphone", "Laptop", "Headphones", "Accessories"].includes(value);
+const mapCategory = (value: string): ProductCategory => {
+  switch (value.toLowerCase()) {
+    case "smartphones":
+      return "Smartphone";
+    case "laptops":
+      return "Laptop";
+    case "headphones":
+      return "Headphones";
+    default:
+      return "Accessories";
+  }
 };
 
 export const mapBackendProductToFrontend = (p: BackendProduct): Product => {
   const specs: ProductSpecs = {
-    display: p.display ?? undefined,
-    chip: p.chip ?? undefined,
-    ram: p.ram ?? undefined,
-    storage: p.storage ?? undefined,
-    battery: p.battery ?? undefined,
-    camera: p.camera ?? undefined,
-    os: p.os ?? undefined,
-    connectivity: p.connectivity ?? undefined,
+    display: p.specs?.display ?? undefined,
+    chip: p.specs?.chip ?? undefined,
+    ram: p.specs?.ram ?? undefined,
+    storage: p.specs?.storage ?? undefined,
+    battery: p.specs?.battery ?? undefined,
+    camera: p.specs?.camera ?? undefined,
+    os: p.specs?.os ?? undefined,
+    connectivity: p.specs?.connectivity ?? undefined,
   };
 
   return {
     id: p.id,
     name: p.name,
     brand: p.brand,
-    category: isValidCategory(p.category) ? p.category : "Accessories",
+    category: mapCategory(p.category),
     price: p.price,
     image: p.image,
     colors: p.colors,

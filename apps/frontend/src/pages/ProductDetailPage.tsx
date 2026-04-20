@@ -1,19 +1,28 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import type { ProductCategory, Product } from "../types/product";
+import type { Product } from "../types/product";
 import type { WishlistItem } from "../types/WishlistItem";
 import { useWishlist } from "../hooks/useWishlist";
-import { ProductService } from "../services/ProductService";
 
-function categoryToSlug(cat: ProductCategory): WishlistItem["category"] {
-  switch (cat) {
-    case "Smartphone":
+function categoryToSlug(
+  cat: string
+): "smartphones" | "laptops" | "headphones" | "accessories" {
+  switch (cat.toLowerCase()) {
+    case "smartphone":
+    case "smartphones":
       return "smartphones";
-    case "Laptop":
+
+    case "laptop":
+    case "laptops":
       return "laptops";
-    case "Headphones":
+
+    case "headphones":
       return "headphones";
-    case "Accessories":
+
+    case "accessories":
+      return "accessories";
+
+    default:
       return "accessories";
   }
 }
@@ -22,28 +31,50 @@ function slugify(s: string) {
   return s.toLowerCase().replace(/\s+/g, "-");
 }
 
-const productService = new ProductService();
-
 export default function ProductDetailsPage() {
   const { id } = useParams<{ id?: string }>();
   const { toggle, isWishlisted, message } = useWishlist();
+
   const [product, setProduct] = useState<Product | undefined>();
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
     const loadProduct = async () => {
       try {
+        setLoading(true);
         setError("");
+
         if (!id) return;
-        const data = await productService.getById(Number(id));
+
+        const res = await fetch(
+          `http://localhost:3000/api/v1/products/${id}`
+        );
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch product");
+        }
+
+        const data = await res.json();
         setProduct(data);
-      } catch {
+      } catch (err) {
+        console.error(err);
         setError("Failed to load product");
+      } finally {
+        setLoading(false);
       }
     };
 
     loadProduct();
   }, [id]);
+
+  if (loading) {
+    return (
+      <main style={{ padding: 24 }}>
+        <p>Loading product...</p>
+      </main>
+    );
+  }
 
   if (error) {
     return (
@@ -57,10 +88,12 @@ export default function ProductDetailsPage() {
     return (
       <main style={{ padding: 24 }}>
         <p>Product not found.</p>
-        <Link to="/explore/smartphones">Back</Link>
+        <Link to="/explore">Back</Link>
       </main>
     );
   }
+
+  const specs = product.specs || {};
 
   const inWishlist = isWishlisted(String(product.id));
 
@@ -72,13 +105,11 @@ export default function ProductDetailsPage() {
     rating: 4.5,
   };
 
+  const categorySlug = categoryToSlug(product.category);
+
   return (
     <main style={{ padding: 24, maxWidth: 900, margin: "0 auto" }}>
-      <Link
-        to={`/explore/${categoryToSlug(product.category)}/${slugify(
-          product.brand
-        )}`}
-      >
+      <Link to={`/explore/${categorySlug}/${slugify(product.brand)}`}>
         ← Back to {product.brand}
       </Link>
 
@@ -131,55 +162,37 @@ export default function ProductDetailsPage() {
           <h1 style={{ marginTop: 0 }}>{product.name}</h1>
 
           {product.taglineLines.map((t: string, i: number) => (
-            <p key={i} style={{ margin: "6px 0" }}>
-              {t}
-            </p>
+            <p key={i}>{t}</p>
           ))}
 
-          <h3 style={{ marginTop: 18 }}>From ${product.price}</h3>
+          <h3>From ${product.price}</h3>
 
-          <button
-            onClick={() => toggle(wishlistItem)}
-            style={{
-              marginTop: 12,
-              padding: "10px 14px",
-              borderRadius: 10,
-              border: "1px solid #ddd",
-              cursor: "pointer",
-            }}
-          >
-            {inWishlist ? "★ Wishlisted" : "☆ Add to Wishlist"}
+          <button onClick={() => toggle(wishlistItem)}>
+            {inWishlist ? "Wishlisted" : "Add to Wishlist"}
           </button>
 
-          {message && <p style={{ marginTop: 10 }}>{message}</p>}
+          {message && <p>{message}</p>}
 
-          {product.specs && (
+          {(specs.display ||
+            specs.chip ||
+            specs.ram ||
+            specs.storage ||
+            specs.battery ||
+            specs.camera ||
+            specs.os ||
+            specs.connectivity) && (
             <>
-              <h3 style={{ marginTop: 18 }}>Specifications</h3>
+              <h3>Specifications</h3>
               <ul>
-                {product.specs.display && (
-                  <li><strong>Display:</strong> {product.specs.display}</li>
-                )}
-                {product.specs.chip && (
-                  <li><strong>Chip:</strong> {product.specs.chip}</li>
-                )}
-                {product.specs.ram && (
-                  <li><strong>RAM:</strong> {product.specs.ram}</li>
-                )}
-                {product.specs.storage && (
-                  <li><strong>Storage:</strong> {product.specs.storage}</li>
-                )}
-                {product.specs.battery && (
-                  <li><strong>Battery:</strong> {product.specs.battery}</li>
-                )}
-                {product.specs.camera && (
-                  <li><strong>Camera:</strong> {product.specs.camera}</li>
-                )}
-                {product.specs.os && (
-                  <li><strong>OS:</strong> {product.specs.os}</li>
-                )}
-                {product.specs.connectivity && (
-                  <li><strong>Connectivity:</strong> {product.specs.connectivity}</li>
+                {specs.display && <li>Display: {specs.display}</li>}
+                {specs.chip && <li>Chip: {specs.chip}</li>}
+                {specs.ram && <li>RAM: {specs.ram}</li>}
+                {specs.storage && <li>Storage: {specs.storage}</li>}
+                {specs.battery && <li>Battery: {specs.battery}</li>}
+                {specs.camera && <li>Camera: {specs.camera}</li>}
+                {specs.os && <li>OS: {specs.os}</li>}
+                {specs.connectivity && (
+                  <li>Connectivity: {specs.connectivity}</li>
                 )}
               </ul>
             </>

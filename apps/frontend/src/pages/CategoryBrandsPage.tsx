@@ -1,48 +1,55 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
-import type { ProductCategory } from "../types/product";
-import { ProductService } from "../services/ProductService";
-
-const CATEGORY_MAP: Record<string, ProductCategory> = {
-  smartphones: "Smartphone",
-  laptops: "Laptop",
-  headphones: "Headphones",
-  accessories: "Accessories",
-};
+import { useEffect, useState } from "react";
 
 function slugify(s: string) {
   return s.toLowerCase().replace(/\s+/g, "-");
 }
 
-const productService = new ProductService();
+type BackendProduct = {
+  brand: string;
+};
 
 export default function CategoryBrandsPage() {
   const { categorySlug } = useParams<{ categorySlug?: string }>();
   const [brands, setBrands] = useState<string[]>([]);
   const [error, setError] = useState("");
-
-  const category = useMemo<ProductCategory | null>(() => {
-    if (!categorySlug) return null;
-    return CATEGORY_MAP[categorySlug.toLowerCase()] ?? null;
-  }, [categorySlug]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadBrands = async () => {
-      if (!category) return;
+      if (!categorySlug) return;
 
       try {
+        setLoading(true);
         setError("");
-        const data = await productService.listBrandsByCategory(category);
-        setBrands(data);
-      } catch {
+
+        const res = await fetch(
+          `http://localhost:3000/api/v1/products/category/${categorySlug}`
+        );
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch brands");
+        }
+
+        const data: BackendProduct[] = await res.json();
+
+        const uniqueBrands: string[] = Array.from(
+          new Set(data.map((p) => p.brand))
+        );
+
+        setBrands(uniqueBrands);
+      } catch (err) {
+        console.error(err);
         setError("Failed to load brands");
+      } finally {
+        setLoading(false);
       }
     };
 
     loadBrands();
-  }, [category]);
+  }, [categorySlug]);
 
-  if (!category || !categorySlug) {
+  if (!categorySlug) {
     return (
       <main style={{ padding: 24 }}>
         <h2>Category not found</h2>
@@ -51,10 +58,19 @@ export default function CategoryBrandsPage() {
     );
   }
 
+  if (loading) {
+    return (
+      <main style={{ padding: 24 }}>
+        <h2>{categorySlug} Brands</h2>
+        <p>Loading...</p>
+      </main>
+    );
+  }
+
   if (error) {
     return (
       <main style={{ padding: 24 }}>
-        <h2>{category} Brands</h2>
+        <h2>{categorySlug} Brands</h2>
         <p>{error}</p>
       </main>
     );
@@ -62,14 +78,23 @@ export default function CategoryBrandsPage() {
 
   return (
     <main style={{ padding: 24 }}>
-      <h2>{category} Brands</h2>
+      <h2 style={{ textTransform: "capitalize" }}>
+        {categorySlug} Brands
+      </h2>
       <p>Pick a brand:</p>
 
-      <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginTop: 12 }}>
-        {brands.map((b) => (
+      <div
+        style={{
+          display: "flex",
+          gap: 14,
+          flexWrap: "wrap",
+          marginTop: 12,
+        }}
+      >
+        {brands.map((brand) => (
           <Link
-            key={b}
-            to={`/explore/${categorySlug}/${slugify(b)}`}
+            key={brand}
+            to={`/explore/${categorySlug}/${slugify(brand)}`}
             style={{
               padding: "10px 14px",
               border: "1px solid #ddd",
@@ -77,7 +102,7 @@ export default function CategoryBrandsPage() {
               textDecoration: "none",
             }}
           >
-            {b}
+            {brand}
           </Link>
         ))}
       </div>

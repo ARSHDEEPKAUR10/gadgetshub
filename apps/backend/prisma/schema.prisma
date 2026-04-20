@@ -6,25 +6,24 @@ datasource db {
   provider = "postgresql"
 }
 
-model Product {
-  id           Int      @id
-  name         String
-  brand        String
-  category     String
-  price        Float
-  image        String
-  colors       String[]
-  taglineLines String[]
+model Employee {
+  id        Int    @id @default(autoincrement())
+  firstName String
+  lastName  String
+  roleId    Int
+  email     String @unique
+  Role      Role   @relation(fields: [roleId], references: [id])
+}
 
-  display      String?
-  chip         String?
-  ram          String?
-  storage      String?
-  battery      String?
-  camera       String?
-  os           String?
-  connectivity String?
+model OrganizationMember {
+  id        String @id
+  firstName String
+  lastName  String
+  role      String @unique
+}
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+model Role {
+  id       Int        @id @default(autoincrement())
+  name     String     @unique
+  Employee Employee[]
 }

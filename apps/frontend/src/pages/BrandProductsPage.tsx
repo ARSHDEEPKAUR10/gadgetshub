@@ -1,18 +1,8 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
-import type { Product, ProductCategory } from "../types/product";
-import { ProductService } from "../services/ProductService";
+import type { Product } from "../types/product";
 import GadgetCard from "../components/GadgetCard/GadgetCard";
-
-const CATEGORY_MAP: Record<string, ProductCategory> = {
-  smartphones: "Smartphone",
-  laptops: "Laptop",
-  headphones: "Headphones",
-  accessories: "Accessories",
-};
-
-const productService = new ProductService();
 
 export default function BrandProductsPage() {
   const { categorySlug, brandSlug } = useParams<{
@@ -20,34 +10,33 @@ export default function BrandProductsPage() {
     brandSlug?: string;
   }>();
 
-  const [filtered, setFiltered] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState("");
-
-  const category = useMemo<ProductCategory | null>(() => {
-    if (!categorySlug) return null;
-    return CATEGORY_MAP[categorySlug.toLowerCase()] ?? null;
-  }, [categorySlug]);
 
   useEffect(() => {
     const loadProducts = async () => {
-      if (!category || !brandSlug) return;
+      if (!categorySlug || !brandSlug) return;
 
       try {
         setError("");
-        const data = await productService.listByCategoryAndBrand(
-          category,
-          brandSlug
+
+        const res = await fetch(
+          `http://localhost:3000/api/v1/products/category/${categorySlug}/brand/${brandSlug}`
         );
-        setFiltered(data);
-      } catch {
+
+        const data = await res.json();
+
+        setProducts(data);
+      } catch (err) {
+        console.error(err);
         setError("Failed to load products");
       }
     };
 
     loadProducts();
-  }, [category, brandSlug]);
+  }, [categorySlug, brandSlug]);
 
-  if (!category) {
+  if (!categorySlug) {
     return (
       <main style={{ padding: 24 }}>
         <h2>Category not found</h2>
@@ -60,8 +49,8 @@ export default function BrandProductsPage() {
     return (
       <main style={{ padding: 24 }}>
         <Link to={`/explore/${categorySlug}`}>← Back to brands</Link>
-        <h2 style={{ margin: "16px 0" }}>
-          {brandSlug?.toUpperCase()} {category}
+        <h2 style={{ margin: "16px 0", textTransform: "capitalize" }}>
+          {brandSlug} {categorySlug}
         </h2>
         <p>{error}</p>
       </main>
@@ -72,11 +61,11 @@ export default function BrandProductsPage() {
     <main style={{ padding: 24 }}>
       <Link to={`/explore/${categorySlug}`}>← Back to brands</Link>
 
-      <h2 style={{ margin: "16px 0" }}>
-        {brandSlug?.toUpperCase()} {category}
+      <h2 style={{ margin: "16px 0", textTransform: "capitalize" }}>
+        {brandSlug} {categorySlug}
       </h2>
 
-      {filtered.length === 0 ? (
+      {products.length === 0 ? (
         <p>No products found.</p>
       ) : (
         <section
@@ -87,7 +76,7 @@ export default function BrandProductsPage() {
             marginTop: 20,
           }}
         >
-          {filtered.map((p) => (
+          {products.map((p) => (
             <GadgetCard
               key={p.id}
               id={p.id}
