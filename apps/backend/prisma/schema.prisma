@@ -7,24 +7,46 @@ datasource db {
 }
 
 model Product {
-  id           Int      @id
-  name         String
-  brand        String
-  category     String
-  price        Float
-  image        String
-  colors       String[]
-  taglineLines String[]
+  id            Int            @id @default(autoincrement())
+  name          String
+  brand         String
+  category      String
+  price         Float
+  image         String
+  colors        String[]
+  taglineLines  String[]
 
-  display      String?
-  chip         String?
-  ram          String?
-  storage      String?
-  battery      String?
-  camera       String?
-  os           String?
-  connectivity String?
+  display       String?
+  chip          String?
+  ram           String?
+  storage       String?
+  battery       String?
+  camera        String?
+  os            String?
+  connectivity  String?
 
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  wishlistItems WishlistItem[]
+
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model User {
+  id            Int            @id @default(autoincrement())
+  clerkUserId   String         @unique
+  wishlistItems WishlistItem[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model WishlistItem {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
 }

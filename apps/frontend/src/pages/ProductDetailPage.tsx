@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/clerk-react";
 import type { ProductCategory, Product } from "../types/product";
 import type { WishlistItem } from "../types/WishlistItem";
 import { useWishlist } from "../hooks/useWishlist";
@@ -26,7 +27,7 @@ const productService = new ProductService();
 
 export default function ProductDetailsPage() {
   const { id } = useParams<{ id?: string }>();
-  const { toggle, isWishlisted, message } = useWishlist();
+  const { toggle, isWishlisted, message, loading } = useWishlist();
   const [product, setProduct] = useState<Product | undefined>();
   const [error, setError] = useState("");
 
@@ -138,18 +139,40 @@ export default function ProductDetailsPage() {
 
           <h3 style={{ marginTop: 18 }}>From ${product.price}</h3>
 
-          <button
-            onClick={() => toggle(wishlistItem)}
-            style={{
-              marginTop: 12,
-              padding: "10px 14px",
-              borderRadius: 10,
-              border: "1px solid #ddd",
-              cursor: "pointer",
-            }}
-          >
-            {inWishlist ? "★ Wishlisted" : "☆ Add to Wishlist"}
-          </button>
+          <SignedIn>
+            <button
+              type="button"
+              onClick={() => toggle(wishlistItem)}
+              disabled={loading}
+              style={{
+                marginTop: 12,
+                padding: "10px 14px",
+                borderRadius: 10,
+                border: "1px solid #ddd",
+                cursor: loading ? "not-allowed" : "pointer",
+              }}
+            >
+              {inWishlist ? "★ Wishlisted" : "☆ Add to Wishlist"}
+            </button>
+          </SignedIn>
+
+          <SignedOut>
+            <div style={{ marginTop: 12 }}>
+              <SignInButton mode="modal">
+                <button
+                  type="button"
+                  style={{
+                    padding: "10px 14px",
+                    borderRadius: 10,
+                    border: "1px solid #ddd",
+                    cursor: "pointer",
+                  }}
+                >
+                  Log in to use Wishlist
+                </button>
+              </SignInButton>
+            </div>
+          </SignedOut>
 
           {message && <p style={{ marginTop: 10 }}>{message}</p>}
 

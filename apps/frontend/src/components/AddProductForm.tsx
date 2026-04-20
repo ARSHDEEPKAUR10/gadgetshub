@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import type { ProductCategory } from "../types/Product";
+import type { ProductCategory } from "../../src/types/product";
 import { ProductService } from "../services/ProductService";
 
 type AddProductFormProps = {
