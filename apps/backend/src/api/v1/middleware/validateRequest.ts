@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ObjectSchema } from "joi";
+import { ObjectSchema, ValidationErrorItem } from "joi";
 
 export const validateRequest =
   (schema: ObjectSchema) =>
@@ -9,7 +9,7 @@ export const validateRequest =
     if (error) {
       res.status(400).json({
         message: "Validation failed",
-        details: error.details.map((detail) => detail.message),
+        details: error.details.map((detail: ValidationErrorItem) => detail.message),
       });
       return;
     }

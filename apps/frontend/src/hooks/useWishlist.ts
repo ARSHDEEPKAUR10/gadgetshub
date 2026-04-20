@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
-
+import { useEffect, useMemo, useState } from "react";
 import type { WishlistItem } from "../types/WishlistItem";
 import { WishlistRepository } from "../repositories/WishlistRepository";
 import { WishlistService } from "../services/WishlistService";
@@ -9,50 +8,79 @@ const repo = new WishlistRepository();
 const service = new WishlistService(repo);
 
 export function useWishlist() {
-  const { getToken } = useAuth();
+  const { getToken, isSignedIn } = useAuth();
 
   const [items, setItems] = useState<WishlistItem[]>([]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function refresh() {
+    if (!isSignedIn) {
+      setItems([]);
+      return;
+    }
+
     setLoading(true);
+    setMessage("");
+
     try {
       const token = await getToken();
-      const data = await service.list(token!);
+      const data = await service.list(token ?? undefined);
       setItems(data);
+    } catch (error) {
+      console.error("Failed to load wishlist:", error);
+      setMessage("Failed to load wishlist.");
     } finally {
       setLoading(false);
     }
   }
 
   async function toggle(item: WishlistItem) {
+    if (!isSignedIn) {
+      setMessage("Please log in first.");
+      return false;
+    }
+
     setLoading(true);
+    setMessage("");
+
     try {
       const token = await getToken();
-
-      const res = await service.toggle(item, token!);
+      const res = await service.toggle(item, token ?? undefined);
       setMessage(res.message);
 
-      const data = await service.list(token!);
+      const data = await service.list(token ?? undefined);
       setItems(data);
 
       return res.inWishlist;
+    } catch (error) {
+      console.error("Failed to update wishlist:", error);
+      setMessage("Failed to update wishlist.");
+      return false;
     } finally {
       setLoading(false);
     }
   }
 
   async function remove(id: string) {
+    if (!isSignedIn) {
+      setMessage("Please log in first.");
+      return;
+    }
+
     setLoading(true);
+    setMessage("");
+
     try {
       const token = await getToken();
-
-      await service.remove(id, token!);
+      await service.remove(id, token ?? undefined);
       setMessage("Removed from wishlist");
 
-      const data = await service.list(token!);
+      const data = await service.list(token ?? undefined);
       setItems(data);
+    } catch (error) {
+      console.error("Failed to remove wishlist item:", error);
+      setMessage("Failed to remove item from wishlist.");
     } finally {
       setLoading(false);
     }
@@ -67,21 +95,37 @@ export function useWishlist() {
   useEffect(() => {
     let cancelled = false;
 
-    (async () => {
+    async function loadWishlist() {
+      if (!isSignedIn) {
+        setItems([]);
+        return;
+      }
+
       setLoading(true);
       try {
         const token = await getToken();
-        const data = await service.list(token!);
-        if (!cancelled) setItems(data);
+        const data = await service.list(token ?? undefined);
+        if (!cancelled) {
+          setItems(data);
+        }
+      } catch (error) {
+        console.error("Failed to load wishlist:", error);
+        if (!cancelled) {
+          setMessage("Failed to load wishlist.");
+        }
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
-    })();
+    }
+
+    loadWishlist();
 
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [isSignedIn, getToken]);
 
   return {
     items,

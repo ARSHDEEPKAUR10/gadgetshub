@@ -8,20 +8,15 @@ export class WishlistService {
     this.repo = repo;
   }
 
-  list(token: string) {
+  list(token?: string) {
     return this.repo.list(token);
   }
 
-  async toggle(item: WishlistItem, token: string) {
-    await this.repo.add(Number(item.id), token);
-
-    return {
-      message: "Added to wishlist",
-      inWishlist: true,
-    };
+  toggle(item: WishlistItem, token?: string) {
+    return this.repo.toggle(item, token);
   }
 
-  remove(id: string, token: string) {
+  remove(id: string, token?: string) {
     return this.repo.remove(id, token);
   }
 }
