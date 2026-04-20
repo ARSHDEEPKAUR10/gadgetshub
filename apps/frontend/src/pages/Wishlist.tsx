@@ -1,7 +1,17 @@
+import { useUser } from "@clerk/clerk-react";
 import { useWishlist } from "../hooks/useWishlist";
 
 export default function WishlistPage() {
+  const { isSignedIn } = useUser();
   const { items, loading, message, remove, count } = useWishlist();
+
+  if (!isSignedIn) {
+    return (
+      <main style={{ padding: "1.5rem" }}>
+        <h2>Please login to view your wishlist</h2>
+      </main>
+    );
+  }
 
   return (
     <main style={{ padding: "1.5rem" }}>
