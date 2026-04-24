@@ -14,7 +14,6 @@ export default function CategoryBrandsPage() {
   const [brands, setBrands] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const loadBrands = async () => {
       if (!categorySlug) return;
