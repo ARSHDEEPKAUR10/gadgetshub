@@ -20,6 +20,6 @@ app.get("/", (_req, res) => {
 
 app.use("/api/v1/products", productRoutes);
 
-app.use("/api/wishlist", wishlistRoutes);
+app.use("/api/v1/wishlist", wishlistRoutes);
 
 export default app;

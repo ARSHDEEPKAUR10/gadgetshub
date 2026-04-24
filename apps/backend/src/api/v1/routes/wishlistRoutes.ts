@@ -10,9 +10,18 @@ router.get("/", requireAuth(), async (req, res) => {
 
     const items = await prisma.wishlist.findMany({
       where: { userId },
+      include: { product: true }, 
     });
 
-    res.json(items);
+    const formatted = items.map((w) => ({
+      id: String(w.product.id), 
+      title: w.product.name,
+      category: w.product.category.toLowerCase(),
+      priceCAD: w.product.price,
+      rating: 4.5,
+    }));
+
+    res.json(formatted);
   } catch (error) {
     console.error("Error fetching wishlist:", error);
     res.status(500).json({ message: "Server error" });
@@ -28,16 +37,31 @@ router.post("/", requireAuth(), async (req, res) => {
       return res.status(400).json({ message: "productId is required" });
     }
 
-    const item = await prisma.wishlist.create({
-      data: {
-        userId,
-        productId,
-      },
+    const existing = await prisma.wishlist.findFirst({
+      where: { userId, productId },
     });
 
-    res.json(item);
+    if (existing) {
+      await prisma.wishlist.delete({
+        where: { id: existing.id },
+      });
+
+      return res.json({
+        message: "Removed from wishlist",
+        inWishlist: false,
+      });
+    }
+
+    await prisma.wishlist.create({
+      data: { userId, productId },
+    });
+
+    res.json({
+      message: "Added to wishlist",
+      inWishlist: true,
+    });
   } catch (error) {
-    console.error("Error adding to wishlist:", error);
+    console.error("Error toggling wishlist:", error);
     res.status(500).json({ message: "Server error" });
   }
 });

@@ -12,6 +12,7 @@ model Employee {
   lastName  String
   roleId    Int
   email     String @unique
+
   Role      Role   @relation(fields: [roleId], references: [id])
 }
 
@@ -26,4 +27,37 @@ model Role {
   id       Int        @id @default(autoincrement())
   name     String     @unique
   Employee Employee[]
+}
+
+model Product {
+  id           Int      @id @default(autoincrement())
+  name         String
+  brand        String
+  category     String
+  price        Int
+  image        String
+  colors       String[]
+  taglineLines String[]
+
+  display      String?
+  chip         String?
+  ram          String?
+  storage      String?
+  battery      String?
+  camera       String?
+  os           String?
+  connectivity String?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  wishlists    Wishlist[]
+}
+
+model Wishlist {
+  id        Int     @id @default(autoincrement())
+  userId    String
+  productId Int
+
+  product   Product @relation(fields: [productId], references: [id])
 }

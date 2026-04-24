@@ -20,10 +20,8 @@ export default function App() {
       <Route path="/explore/:categorySlug/:brandSlug" element={<BrandProductsPage />} />
       <Route path="/product/:id" element={<ProductDetailsPage />} />
 
-      {/* Protected Route */}
       <Route path="/wishlist" element={<ProtectedRoute><WishlistPage /></ProtectedRoute>} />
 
-      {/* Auth Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
 

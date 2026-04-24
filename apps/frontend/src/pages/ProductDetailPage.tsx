@@ -8,11 +8,9 @@ function categoryToSlug(
   cat: string
 ): "smartphones" | "laptops" | "headphones" | "accessories" {
   switch (cat.toLowerCase()) {
-    case "smartphone":
     case "smartphones":
       return "smartphones";
 
-    case "laptop":
     case "laptops":
       return "laptops";
 

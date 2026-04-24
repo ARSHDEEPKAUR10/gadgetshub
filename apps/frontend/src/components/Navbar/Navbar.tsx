@@ -17,7 +17,6 @@ export default function Navbar() {
         <NavLink to="/explore">Explore</NavLink>
         <NavLink to="/wishlist">Wishlist</NavLink>
 
-        {/* Auth Section */}
         {isSignedIn ? (
           <UserButton afterSignOutUrl="/" />
         ) : (

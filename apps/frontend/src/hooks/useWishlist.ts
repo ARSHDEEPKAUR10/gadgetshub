@@ -19,7 +19,9 @@ export function useWishlist() {
     setLoading(true);
     try {
       const token = await getToken();
-      const data = await service.list(token!);
+      if (!token) return;
+
+      const data = await service.list(token);
       setItems(data);
     } finally {
       setLoading(false);
@@ -30,11 +32,12 @@ export function useWishlist() {
     setLoading(true);
     try {
       const token = await getToken();
+      if (!token) return;
 
-      const res = await service.toggle(item, token!);
+      const res = await service.toggle(item, token);
       setMessage(res.message);
 
-      const data = await service.list(token!);
+      const data = await service.list(token);
       setItems(data);
 
       return res.inWishlist;
@@ -47,18 +50,22 @@ export function useWishlist() {
     setLoading(true);
     try {
       const token = await getToken();
+      if (!token) return;
 
-      await service.remove(id, token!);
+      await service.remove(id, token);
       setMessage("Removed from wishlist");
 
-      const data = await service.list(token!);
+      const data = await service.list(token);
       setItems(data);
     } finally {
       setLoading(false);
     }
   }
 
-  const ids = useMemo(() => new Set(items.map((x) => x.id)), [items]);
+  const ids = useMemo(
+    () => new Set(items.map((x) => x.id)),
+    [items]
+  );
 
   function isWishlisted(id: string) {
     return ids.has(id);
@@ -71,7 +78,10 @@ export function useWishlist() {
       setLoading(true);
       try {
         const token = await getToken();
-        const data = await service.list(token!);
+        if (!token) return;
+
+        const data = await service.list(token);
+
         if (!cancelled) setItems(data);
       } finally {
         if (!cancelled) setLoading(false);
@@ -81,7 +91,7 @@ export function useWishlist() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [getToken]);
 
   return {
     items,

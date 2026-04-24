@@ -11,7 +11,7 @@ export class WishlistRepository {
     return res.json();
   }
 
-  async add(productId: number, token: string) {
+  async add(productId: string, token: string) {
     const res = await fetch(this.baseUrl, {
       method: "POST",
       headers: {
