@@ -2,11 +2,6 @@ import type { WishlistItem } from "../types/WishlistItem";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-type ToggleWishlistResponse = {
-  message: string;
-  inWishlist: boolean;
-};
-
 export class WishlistRepository {
   async list(token?: string): Promise<WishlistItem[]> {
     const res = await fetch(`${BASE_URL}/wishlist`, {
@@ -22,13 +17,14 @@ export class WishlistRepository {
     return res.json();
   }
 
-  async toggle(
-    item: WishlistItem,
-    token?: string
-  ): Promise<ToggleWishlistResponse> {
-    const res = await fetch(`${BASE_URL}/wishlist/${item.id}`, {
+  async add(productId: string, token: string) {
+    const res = await fetch(`${BASE_URL}/wishlist`, {
       method: "POST",
-      headers: this.buildHeaders(token),
+      headers: {
+        ...this.buildHeaders(token),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ productId }),
     });
 
     if (!res.ok) {

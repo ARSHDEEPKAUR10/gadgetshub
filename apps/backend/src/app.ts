@@ -24,4 +24,8 @@ app.get("/", (_req, res) => {
   res.send("Backend is running");
 });
 
+app.use("/api/v1/products", productRoutes);
+
+app.use("/api/v1/wishlist", wishlistRoutes);
+
 export default app;

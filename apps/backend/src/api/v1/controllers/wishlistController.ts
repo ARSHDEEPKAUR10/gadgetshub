@@ -32,20 +32,13 @@ export async function getWishlist(
 ): Promise<void> {
   const user = res.locals.user;
 
-  const items = await prisma.wishlistItem.findMany({
+  const items = await prisma.wishlist.findMany({
     where: { userId: user.id },
     include: { product: true },
     orderBy: { createdAt: "desc" },
   });
 
-  const response: FrontendWishlistItem[] = items.map((item: {
-    product: {
-      id: number;
-      name: string;
-      category: string;
-      price: number;
-    };
-  }) => ({
+  const response: FrontendWishlistItem[] = items.map((item: any) => ({
     id: String(item.product.id),
     title: item.product.name,
     category: mapCategory(item.product.category),
@@ -77,17 +70,15 @@ export async function toggleWishlist(
     return;
   }
 
-  const existing = await prisma.wishlistItem.findUnique({
+  const existing = await prisma.wishlist.findFirst({
     where: {
-      userId_productId: {
-        userId: user.id,
-        productId,
-      },
+      userId: user.id,
+      productId,
     },
   });
 
   if (existing) {
-    await prisma.wishlistItem.delete({
+    await prisma.wishlist.delete({
       where: { id: existing.id },
     });
 
@@ -98,7 +89,7 @@ export async function toggleWishlist(
     return;
   }
 
-  await prisma.wishlistItem.create({
+  await prisma.wishlist.create({
     data: {
       userId: user.id,
       productId,
@@ -123,7 +114,7 @@ export async function removeWishlistItem(
     return;
   }
 
-  await prisma.wishlistItem.deleteMany({
+  await prisma.wishlist.deleteMany({
     where: {
       userId: user.id,
       productId,

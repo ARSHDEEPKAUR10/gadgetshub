@@ -12,8 +12,28 @@ export class WishlistService {
     return this.repo.list(token);
   }
 
-  toggle(item: WishlistItem, token?: string) {
-    return this.repo.toggle(item, token);
+  async toggle(item: WishlistItem, token: string) {
+    const list = await this.repo.list(token);
+
+    const exists = list.some(
+      (x: WishlistItem) => x.id === item.id
+    );
+
+    if (exists) {
+      await this.repo.remove(item.id, token);
+
+      return {
+        message: "Removed from wishlist",
+        inWishlist: false,
+      };
+    }
+
+    await this.repo.add(item.id, token);
+
+    return {
+      message: "Added to wishlist",
+      inWishlist: true,
+    };
   }
 
   remove(id: string, token?: string) {

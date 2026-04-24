@@ -25,7 +25,9 @@ export function useWishlist() {
 
     try {
       const token = await getToken();
-      const data = await service.list(token ?? undefined);
+      if (!token) return;
+
+      const data = await service.list(token);
       setItems(data);
     } catch (error) {
       console.error("Failed to load wishlist:", error);
@@ -46,10 +48,12 @@ export function useWishlist() {
 
     try {
       const token = await getToken();
-      const res = await service.toggle(item, token ?? undefined);
+      if (!token) return;
+
+      const res = await service.toggle(item, token);
       setMessage(res.message);
 
-      const data = await service.list(token ?? undefined);
+      const data = await service.list(token);
       setItems(data);
 
       return res.inWishlist;
@@ -73,10 +77,12 @@ export function useWishlist() {
 
     try {
       const token = await getToken();
-      await service.remove(id, token ?? undefined);
+      if (!token) return;
+
+      await service.remove(id, token);
       setMessage("Removed from wishlist");
 
-      const data = await service.list(token ?? undefined);
+      const data = await service.list(token);
       setItems(data);
     } catch (error) {
       console.error("Failed to remove wishlist item:", error);
@@ -86,7 +92,10 @@ export function useWishlist() {
     }
   }
 
-  const ids = useMemo(() => new Set(items.map((x) => x.id)), [items]);
+  const ids = useMemo(
+    () => new Set(items.map((x) => x.id)),
+    [items]
+  );
 
   function isWishlisted(id: string) {
     return ids.has(id);
@@ -104,15 +113,11 @@ export function useWishlist() {
       setLoading(true);
       try {
         const token = await getToken();
-        const data = await service.list(token ?? undefined);
-        if (!cancelled) {
-          setItems(data);
-        }
-      } catch (error) {
-        console.error("Failed to load wishlist:", error);
-        if (!cancelled) {
-          setMessage("Failed to load wishlist.");
-        }
+        if (!token) return;
+
+        const data = await service.list(token);
+
+        if (!cancelled) setItems(data);
       } finally {
         if (!cancelled) {
           setLoading(false);
@@ -125,7 +130,7 @@ export function useWishlist() {
     return () => {
       cancelled = true;
     };
-  }, [isSignedIn, getToken]);
+  }, [getToken]);
 
   return {
     items,

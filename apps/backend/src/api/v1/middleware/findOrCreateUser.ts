@@ -8,27 +8,25 @@ export async function findOrCreateUser(
   next: NextFunction
 ): Promise<void> {
   try {
-    const auth = getAuth(req as any) as any;
-    const clerkUserId = auth?.userId;
-
-    console.log("clerkUserId:", clerkUserId);
+    const auth = getAuth(req);
+    const clerkUserId = auth.userId;
 
     if (!clerkUserId) {
       res.status(401).json({ message: "Unauthorized" });
       return;
     }
 
-    let user = await prisma.user.findUnique({
+    const user = await prisma.user.upsert({
       where: { clerkUserId },
+      update: {},
+      create: { clerkUserId },
     });
 
-    if (!user) {
-      user = await prisma.user.create({
-        data: { clerkUserId },
-      });
-    }
+    res.locals.user = {
+      id: user.id,
+      clerkUserId: user.clerkUserId,
+    };
 
-    res.locals.user = user;
     next();
   } catch (error) {
     next(error);

@@ -15,7 +15,7 @@
     "@clerk/clerk-react": "^5.61.5",
     "@clerk/express": "^2.1.4",
     "@prisma/adapter-pg": "^7.7.0",
-    "@prisma/client": "^7.7.0",
+    "@prisma/client": "^7.8.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "joi": "^18.1.2",
