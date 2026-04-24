@@ -1,4 +1,5 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import type { FormEvent } from "react";
 import type { ProductCategory } from "../../src/types/product";
 import { ProductService } from "../services/ProductService";
 
