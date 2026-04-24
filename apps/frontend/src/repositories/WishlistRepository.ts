@@ -1,35 +1,59 @@
-export class WishlistRepository {
-  baseUrl = "http://localhost:3000/api/wishlist";
+import type { WishlistItem } from "../types/WishlistItem";
 
-  async list(token: string) {
-    const res = await fetch(this.baseUrl, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+export class WishlistRepository {
+  async list(token?: string): Promise<WishlistItem[]> {
+    const res = await fetch(`${BASE_URL}/wishlist`, {
+      method: "GET",
+      headers: this.buildHeaders(token),
     });
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Failed to fetch wishlist: ${res.status} ${text}`);
+    }
 
     return res.json();
   }
 
   async add(productId: string, token: string) {
-    const res = await fetch(this.baseUrl, {
+    const res = await fetch(`${BASE_URL}/wishlist`, {
       method: "POST",
       headers: {
+        ...this.buildHeaders(token),
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ productId }),
     });
 
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Failed to update wishlist: ${res.status} ${text}`);
+    }
+
     return res.json();
   }
 
-  async remove(id: string, token: string) {
-    await fetch(`${this.baseUrl}/${id}`, {
+  async remove(id: string, token?: string): Promise<void> {
+    const res = await fetch(`${BASE_URL}/wishlist/${id}`, {
       method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: this.buildHeaders(token),
     });
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`Failed to remove wishlist item: ${res.status} ${text}`);
+    }
+  }
+
+  private buildHeaders(token?: string): HeadersInit {
+    const headers: HeadersInit = {};
+
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    return headers;
   }
 }

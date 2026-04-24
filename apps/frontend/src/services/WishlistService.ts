@@ -8,7 +8,7 @@ export class WishlistService {
     this.repo = repo;
   }
 
-  list(token: string) {
+  list(token?: string) {
     return this.repo.list(token);
   }
 
@@ -36,7 +36,7 @@ export class WishlistService {
     };
   }
 
-  remove(id: string, token: string) {
+  remove(id: string, token?: string) {
     return this.repo.remove(id, token);
   }
 }

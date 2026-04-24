@@ -5,6 +5,21 @@ function slugify(s: string) {
   return s.toLowerCase().replace(/\s+/g, "-");
 }
 
+function slugToCategory(slug?: string): string | undefined {
+  switch (slug) {
+    case "smartphones":
+      return "Smartphone";
+    case "laptops":
+      return "Laptop";
+    case "headphones":
+      return "Headphones";
+    case "accessories":
+      return "Accessories";
+    default:
+      return undefined;
+  }
+}
+
 type BackendProduct = {
   brand: string;
 };
@@ -16,14 +31,20 @@ export default function CategoryBrandsPage() {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const loadBrands = async () => {
-      if (!categorySlug) return;
+      const category = slugToCategory(categorySlug);
+
+      if (!category) {
+        setError("Invalid category");
+        setLoading(false);
+        return;
+      }
 
       try {
         setLoading(true);
         setError("");
 
         const res = await fetch(
-          `http://localhost:3000/api/v1/products/category/${categorySlug}`
+          `http://localhost:3000/api/v1/products/category/${category}`
         );
 
         if (!res.ok) {
@@ -60,7 +81,7 @@ export default function CategoryBrandsPage() {
   if (loading) {
     return (
       <main style={{ padding: 24 }}>
-        <h2>{categorySlug} Brands</h2>
+        <h2 style={{ textTransform: "capitalize" }}>{categorySlug} Brands</h2>
         <p>Loading...</p>
       </main>
     );
@@ -69,7 +90,7 @@ export default function CategoryBrandsPage() {
   if (error) {
     return (
       <main style={{ padding: 24 }}>
-        <h2>{categorySlug} Brands</h2>
+        <h2 style={{ textTransform: "capitalize" }}>{categorySlug} Brands</h2>
         <p>{error}</p>
       </main>
     );

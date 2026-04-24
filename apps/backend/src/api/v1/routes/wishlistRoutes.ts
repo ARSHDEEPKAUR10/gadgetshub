@@ -1,20 +1,20 @@
-import express from "express";
+import prisma from "../../../lib/prisma"; 
+import { Router, Request, Response } from "express";
 import { requireAuth } from "@clerk/express";
-import prisma from "../../../lib/prisma";
 
-const router = express.Router();
+const router = Router();
 
-router.get("/", requireAuth(), async (req, res) => {
+router.get("/", requireAuth(), async (req: Request, res: Response) => {
   try {
     const userId = (req as any).auth.userId;
 
     const items = await prisma.wishlist.findMany({
       where: { userId },
-      include: { product: true }, 
+      include: { product: true },
     });
 
     const formatted = items.map((w) => ({
-      id: String(w.product.id), 
+      id: String(w.product.id),
       title: w.product.name,
       category: w.product.category.toLowerCase(),
       priceCAD: w.product.price,
@@ -28,7 +28,7 @@ router.get("/", requireAuth(), async (req, res) => {
   }
 });
 
-router.post("/", requireAuth(), async (req, res) => {
+router.post("/", requireAuth(), async (req: Request, res: Response) => {
   try {
     const userId = (req as any).auth.userId;
     const { productId } = req.body;
@@ -66,7 +66,7 @@ router.post("/", requireAuth(), async (req, res) => {
   }
 });
 
-router.delete("/:id", requireAuth(), async (req, res) => {
+router.delete("/:id", requireAuth(), async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
 

@@ -3,5 +3,5 @@ export type WishlistItem = {
   title: string;
   category: "smartphones" | "laptops" | "headphones" | "accessories";
   priceCAD: number;
-  rating: number; 
+  rating: number;
 };

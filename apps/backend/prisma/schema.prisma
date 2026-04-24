@@ -16,17 +16,18 @@ model Employee {
   Role      Role   @relation(fields: [roleId], references: [id])
 }
 
-model OrganizationMember {
-  id        String @id
-  firstName String
-  lastName  String
-  role      String @unique
-}
-
 model Role {
   id       Int        @id @default(autoincrement())
   name     String     @unique
   Employee Employee[]
+}
+
+model User {
+  id          Int        @id @default(autoincrement())
+  clerkUserId String     @unique
+  wishlists   Wishlist[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 model Product {
@@ -51,13 +52,16 @@ model Product {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  wishlists    Wishlist[]
+  wishlists    Wishlist[] 
 }
 
 model Wishlist {
-  id        Int     @id @default(autoincrement())
-  userId    String
+  id        Int      @id @default(autoincrement())
+  userId    Int
   productId Int
 
-  product   Product @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id]) 
+  product   Product  @relation(fields: [productId], references: [id])
+
+  createdAt DateTime @default(now())
 }
