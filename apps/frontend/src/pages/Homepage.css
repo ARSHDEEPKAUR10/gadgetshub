@@ -10,7 +10,7 @@
   overflow: hidden; 
   position: relative;
 
-  background-image: url("../assets/HomePage.jpeg");
+  background-image: url("../../public/Homepage.jpeg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
