@@ -1,8 +1,37 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import type { Product } from "../types/product";
-import GadgetCard from "../components/GadgetCard/GadgetCard";
+type Product = {
+  id: number;
+  name: string;
+  brand: string;
+  category: string;
+  price: number;
+  image: string;
+};
+
+function slugToCategory(slug?: string): string | undefined {
+  switch (slug) {
+    case "smartphones":
+      return "Smartphone";
+    case "laptops":
+      return "Laptop";
+    case "headphones":
+      return "Headphones";
+    case "accessories":
+      return "Accessories";
+    default:
+      return undefined;
+  }
+}
+
+function unslugifyBrand(slug?: string): string | undefined {
+  if (!slug) return undefined;
+  return slug
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
 
 export default function BrandProductsPage() {
   const { categorySlug, brandSlug } = useParams<{
@@ -12,35 +41,56 @@ export default function BrandProductsPage() {
 
   const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadProducts = async () => {
-      if (!categorySlug || !brandSlug) return;
+      const category = slugToCategory(categorySlug);
+      const brand = unslugifyBrand(brandSlug);
+
+      if (!category || !brand) {
+        setError("Invalid category or brand");
+        setLoading(false);
+        return;
+      }
 
       try {
+        setLoading(true);
         setError("");
 
         const res = await fetch(
-          `http://localhost:3000/api/v1/products/category/${categorySlug}/brand/${brandSlug}`
+          `http://localhost:3000/api/v1/products/category/${category}/brand/${brand}`
         );
 
-        const data = await res.json();
+        if (!res.ok) {
+          throw new Error("Failed to fetch products");
+        }
 
+        const data: Product[] = await res.json();
         setProducts(data);
       } catch (err) {
         console.error(err);
         setError("Failed to load products");
+      } finally {
+        setLoading(false);
       }
     };
 
     loadProducts();
   }, [categorySlug, brandSlug]);
 
-  if (!categorySlug) {
+  if (!categorySlug || !brandSlug) {
     return (
       <main style={{ padding: 24 }}>
-        <h2>Category not found</h2>
-        <Link to="/explore">Go back</Link>
+        <h2>Page not found</h2>
+      </main>
+    );
+  }
+
+  if (loading) {
+    return (
+      <main style={{ padding: 24 }}>
+        <p>Loading...</p>
       </main>
     );
   }
@@ -48,10 +98,6 @@ export default function BrandProductsPage() {
   if (error) {
     return (
       <main style={{ padding: 24 }}>
-        <Link to={`/explore/${categorySlug}`}>← Back to brands</Link>
-        <h2 style={{ margin: "16px 0", textTransform: "capitalize" }}>
-          {brandSlug} {categorySlug}
-        </h2>
         <p>{error}</p>
       </main>
     );
@@ -61,34 +107,48 @@ export default function BrandProductsPage() {
     <main style={{ padding: 24 }}>
       <Link to={`/explore/${categorySlug}`}>← Back to brands</Link>
 
-      <h2 style={{ margin: "16px 0", textTransform: "capitalize" }}>
+      <h2 style={{ marginTop: 24, textTransform: "capitalize" }}>
         {brandSlug} {categorySlug}
       </h2>
 
       {products.length === 0 ? (
         <p>No products found.</p>
       ) : (
-        <section
+        <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
             gap: 20,
             marginTop: 20,
           }}
         >
-          {products.map((p) => (
-            <GadgetCard
-              key={p.id}
-              id={p.id}
-              name={p.name}
-              brand={p.brand}
-              category={p.category}
-              price={p.price}
-              image={p.image}
-              colors={p.colors}
-            />
+          {products.map((product) => (
+            <Link
+              key={product.id}
+              to={`/product/${product.id}`}
+              style={{
+                textDecoration: "none",
+                color: "inherit",
+                border: "1px solid #ddd",
+                borderRadius: 12,
+                padding: 16,
+              }}
+            >
+              <img
+                src={product.image}
+                alt={product.name}
+                style={{
+                  width: "100%",
+                  height: 180,
+                  objectFit: "contain",
+                  marginBottom: 12,
+                }}
+              />
+              <h3 style={{ margin: "0 0 8px" }}>{product.name}</h3>
+              <p style={{ margin: 0 }}>${product.price}</p>
+            </Link>
           ))}
-        </section>
+        </div>
       )}
     </main>
   );
