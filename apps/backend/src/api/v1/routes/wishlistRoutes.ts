@@ -13,7 +13,7 @@ router.get("/", requireAuth(), async (req: Request, res: Response) => {
       include: { product: true },
     });
 
-    const formatted = items.map((w) => ({
+    const formatted = items.map((w: any) => ({
       id: String(w.product.id),
       title: w.product.name,
       category: w.product.category.toLowerCase(),
