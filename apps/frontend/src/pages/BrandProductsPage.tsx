@@ -58,8 +58,11 @@ export default function BrandProductsPage() {
         setLoading(true);
         setError("");
 
+        const API_BASE_URL =
+          import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+
         const res = await fetch(
-          `http://localhost:3000/api/v1/products/category/${category}/brand/${brand}`
+          `${API_BASE_URL}/api/v1/products/category/${category}/brand/${brand}`
         );
 
         if (!res.ok) {
@@ -69,7 +72,7 @@ export default function BrandProductsPage() {
         const data: Product[] = await res.json();
         setProducts(data);
       } catch (err) {
-        console.error(err);
+        console.error("Product fetch error:", err);
         setError("Failed to load products");
       } finally {
         setLoading(false);
