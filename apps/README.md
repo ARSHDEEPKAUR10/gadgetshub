@@ -43,6 +43,16 @@ GadgetsHub focuses on consumer electronics and emphasizes:
 
 It is not a full e-commerce system, but a product exploration and comparison platform.
 
+
+# Environment Variables
+
+# Frontend (.env)
+VITE_CLERK_PUBLISHABLE_KEY=pk_test_cHJpbWFyeS1jcmF5ZmlzaC0xOC5jbGVyay5hY2NvdW50cy5kZXYk
+
+# Backend (.env)
+CLERK_SECRET_KEY=sk_test_yMK4jXpzGAg7FXdIWWLaalO0u2aQiE9osuG7euTexs
+DATABASE_URL=postgresql://postgres:password@localhost:5432/gadgetshub_db
+
 ## Technology Overview
 
 # Frontend
